@@ -10,8 +10,11 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+//Now a *readwrite* property "prop" automatically gets synthesized as
+//@synthesize prop = _prop
 @property (strong, nonatomic) UIWindow *window;
 
+//For a *readonly* property, still need to synthesize to a backing variable in the implementation in order to set it internally
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
