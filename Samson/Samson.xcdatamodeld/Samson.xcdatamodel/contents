@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12A269" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="AbstractExercise" representedClassName="AbstractExercise" isAbstract="YES" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="exercises" inverseEntity="Category" syncable="YES"/>
+    </entity>
+    <entity name="AbstractInterval" representedClassName="AbstractInterval" isAbstract="YES" syncable="YES">
+        <attribute name="repetitions" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="restSeconds" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="workSeconds" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="AbstractWorkout" representedClassName="AbstractWorkout" isAbstract="YES" syncable="YES">
+        <attribute name="seconds" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="Category" representedClassName="Category" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AbstractExercise" inverseName="category" inverseEntity="AbstractExercise" syncable="YES"/>
+    </entity>
+    <entity name="DurationExercise" representedClassName="DurationExercise" parentEntity="AbstractExercise" syncable="YES">
+        <relationship name="intervals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DurationInterval" inverseName="exercise" inverseEntity="DurationInterval" syncable="YES"/>
+        <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DurationWorkout" inverseName="exercise" inverseEntity="DurationWorkout" syncable="YES"/>
+    </entity>
+    <entity name="DurationInterval" representedClassName="DurationInterval" parentEntity="AbstractInterval" syncable="YES">
+        <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="DurationExercise" inverseName="intervals" inverseEntity="DurationExercise" syncable="YES"/>
+    </entity>
+    <entity name="DurationWorkout" representedClassName="DurationWorkout" isAbstract="YES" parentEntity="AbstractWorkout" syncable="YES">
+        <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="DurationExercise" inverseName="workouts" inverseEntity="DurationExercise" syncable="YES"/>
+    </entity>
+    <entity name="WeightExercise" representedClassName="WeightExercise" parentEntity="AbstractExercise" syncable="YES">
+        <relationship name="intervals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeightInterval" inverseName="exercise" inverseEntity="WeightInterval" syncable="YES"/>
+        <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WeightWorkout" inverseName="exercise" inverseEntity="WeightWorkout" syncable="YES"/>
+    </entity>
+    <entity name="WeightInterval" representedClassName="WeightInterval" parentEntity="AbstractInterval" syncable="YES">
+        <attribute name="kilos" optional="YES" attributeType="Decimal" minValueString="0" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WeightExercise" inverseName="intervals" inverseEntity="WeightExercise" syncable="YES"/>
+    </entity>
+    <entity name="WeightWorkout" representedClassName="SetWorkout" parentEntity="AbstractWorkout" syncable="YES">
+        <attribute name="kilos" optional="YES" attributeType="Decimal" minValueString="0" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="repetitions" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WeightExercise" inverseName="workouts" inverseEntity="WeightExercise" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="AbstractExercise" positionX="-270" positionY="-261" width="128" height="88"/>
+        <element name="AbstractInterval" positionX="-335" positionY="284" width="128" height="103"/>
+        <element name="AbstractWorkout" positionX="-324" positionY="-117" width="128" height="73"/>
+        <element name="Category" positionX="-504" positionY="-264" width="128" height="75"/>
+        <element name="DurationExercise" positionX="7" positionY="-88" width="128" height="73"/>
+        <element name="DurationInterval" positionX="-234" positionY="149" width="128" height="58"/>
+        <element name="DurationWorkout" positionX="-216" positionY="9" width="128" height="58"/>
+        <element name="WeightWorkout" positionX="-432" positionY="11" width="128" height="88"/>
+        <element name="WeightExercise" positionX="-749" positionY="26" width="128" height="73"/>
+        <element name="WeightInterval" positionX="-90" positionY="324" width="128" height="58"/>
+    </elements>
+</model>
