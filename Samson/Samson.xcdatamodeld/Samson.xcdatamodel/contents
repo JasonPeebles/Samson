@@ -27,7 +27,7 @@
     <entity name="DurationInterval" representedClassName="DurationInterval" parentEntity="AbstractInterval" syncable="YES">
         <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="DurationExercise" inverseName="intervals" inverseEntity="DurationExercise" syncable="YES"/>
     </entity>
-    <entity name="DurationWorkout" representedClassName="DurationWorkout" isAbstract="YES" parentEntity="AbstractWorkout" syncable="YES">
+    <entity name="DurationWorkout" representedClassName="DurationWorkout" parentEntity="AbstractWorkout" syncable="YES">
         <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="DurationExercise" inverseName="workouts" inverseEntity="DurationExercise" syncable="YES"/>
     </entity>
     <entity name="WeightExercise" representedClassName="WeightExercise" parentEntity="AbstractExercise" syncable="YES">
@@ -50,9 +50,9 @@
         <element name="Category" positionX="-504" positionY="-264" width="128" height="75"/>
         <element name="DurationExercise" positionX="7" positionY="-88" width="128" height="73"/>
         <element name="DurationInterval" positionX="-234" positionY="149" width="128" height="58"/>
-        <element name="DurationWorkout" positionX="-216" positionY="9" width="128" height="58"/>
-        <element name="WeightWorkout" positionX="-432" positionY="11" width="128" height="88"/>
+        <element name="DurationWorkout" positionX="-216" positionY="9" width="128" height="60"/>
         <element name="WeightExercise" positionX="-749" positionY="26" width="128" height="73"/>
         <element name="WeightInterval" positionX="-90" positionY="324" width="128" height="58"/>
+        <element name="WeightWorkout" positionX="-432" positionY="11" width="128" height="88"/>
     </elements>
 </model>
