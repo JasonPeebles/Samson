@@ -25,6 +25,10 @@
 		77B3F05E15E26113001013FC /* SetWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05D15E26113001013FC /* SetWorkout.m */; };
 		77B3F06115E26113001013FC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06015E26113001013FC /* Category.m */; };
 		77B3F06415E26114001013FC /* DurationWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06315E26114001013FC /* DurationWorkout.m */; };
+		77B3F06815E262E1001013FC /* CatalogueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06715E262E1001013FC /* CatalogueStore.m */; };
+		77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77BBDC8415E26EC400D0B79F /* InitialData.plist */; };
+		77BBDC8A15E2755200D0B79F /* AbstractExercise+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */; };
+		77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +64,13 @@
 		77B3F06015E26113001013FC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		77B3F06215E26114001013FC /* DurationWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationWorkout.h; sourceTree = "<group>"; };
 		77B3F06315E26114001013FC /* DurationWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationWorkout.m; sourceTree = "<group>"; };
+		77B3F06615E262E1001013FC /* CatalogueStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogueStore.h; sourceTree = "<group>"; };
+		77B3F06715E262E1001013FC /* CatalogueStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogueStore.m; sourceTree = "<group>"; };
+		77BBDC8415E26EC400D0B79F /* InitialData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InitialData.plist; sourceTree = "<group>"; };
+		77BBDC8815E2755200D0B79F /* AbstractExercise+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AbstractExercise+Custom.h"; sourceTree = "<group>"; };
+		77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AbstractExercise+Custom.m"; sourceTree = "<group>"; };
+		77BBDC9015E279AB00D0B79F /* CatalogueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogueViewController.h; sourceTree = "<group>"; };
+		77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogueViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +119,8 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
+				77BBDC8F15E2798600D0B79F /* View Controllers */,
+				77B3F06515E262BB001013FC /* Catalogue Store */,
 				77B3F03815E257B0001013FC /* Application Delegate */,
 				773A564F15E1E05800170646 /* Models */,
 				770D562315E1DFD800EF29F9 /* Supporting Files */,
@@ -118,6 +131,7 @@
 		770D562315E1DFD800EF29F9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				77BBDC8415E26EC400D0B79F /* InitialData.plist */,
 				770D562415E1DFD800EF29F9 /* Samson-Info.plist */,
 				770D562515E1DFD800EF29F9 /* InfoPlist.strings */,
 				770D562815E1DFD800EF29F9 /* main.m */,
@@ -131,6 +145,8 @@
 			children = (
 				77B3F04715E26112001013FC /* AbstractExercise.h */,
 				77B3F04815E26112001013FC /* AbstractExercise.m */,
+				77BBDC8815E2755200D0B79F /* AbstractExercise+Custom.h */,
+				77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */,
 				77B3F06215E26114001013FC /* DurationWorkout.h */,
 				77B3F06315E26114001013FC /* DurationWorkout.m */,
 				77B3F05F15E26113001013FC /* Category.h */,
@@ -161,6 +177,24 @@
 				770D562C15E1DFD800EF29F9 /* AppDelegate.m */,
 			);
 			name = "Application Delegate";
+			sourceTree = "<group>";
+		};
+		77B3F06515E262BB001013FC /* Catalogue Store */ = {
+			isa = PBXGroup;
+			children = (
+				77B3F06615E262E1001013FC /* CatalogueStore.h */,
+				77B3F06715E262E1001013FC /* CatalogueStore.m */,
+			);
+			name = "Catalogue Store";
+			sourceTree = "<group>";
+		};
+		77BBDC8F15E2798600D0B79F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				77BBDC9015E279AB00D0B79F /* CatalogueViewController.h */,
+				77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				770D562715E1DFD800EF29F9 /* InfoPlist.strings in Resources */,
+				77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +273,9 @@
 				77B3F05E15E26113001013FC /* SetWorkout.m in Sources */,
 				77B3F06115E26113001013FC /* Category.m in Sources */,
 				77B3F06415E26114001013FC /* DurationWorkout.m in Sources */,
+				77B3F06815E262E1001013FC /* CatalogueStore.m in Sources */,
+				77BBDC8A15E2755200D0B79F /* AbstractExercise+Custom.m in Sources */,
+				77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
