@@ -14,6 +14,6 @@
 
 @interface DurationInterval : AbstractInterval
 
-@property (nonatomic, strong) DurationExercise *exercise;
+@property (nonatomic, retain) DurationExercise *exercise;
 
 @end

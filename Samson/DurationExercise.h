@@ -14,8 +14,8 @@
 
 @interface DurationExercise : AbstractExercise
 
-@property (nonatomic, strong) NSSet *intervals;
-@property (nonatomic, strong) NSSet *workouts;
+@property (nonatomic, retain) NSSet *intervals;
+@property (nonatomic, retain) NSSet *workouts;
 @end
 
 @interface DurationExercise (CoreDataGeneratedAccessors)

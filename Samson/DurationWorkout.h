@@ -14,6 +14,6 @@
 
 @interface DurationWorkout : AbstractWorkout
 
-@property (nonatomic, strong) DurationExercise *exercise;
+@property (nonatomic, retain) DurationExercise *exercise;
 
 @end

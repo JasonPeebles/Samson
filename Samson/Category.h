@@ -13,9 +13,9 @@
 
 @interface Category : NSManagedObject
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *sortOrder;
-@property (nonatomic, strong) NSSet *exercises;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) double sortOrder;
+@property (nonatomic, retain) NSSet *exercises;
 @end
 
 @interface Category (CoreDataGeneratedAccessors)

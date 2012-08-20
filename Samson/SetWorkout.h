@@ -14,8 +14,8 @@
 
 @interface SetWorkout : AbstractWorkout
 
-@property (nonatomic, strong) NSDecimalNumber *kilos;
-@property (nonatomic, strong) NSNumber *repetitions;
-@property (nonatomic, strong) WeightExercise *exercise;
+@property (nonatomic) double kilos;
+@property (nonatomic) int16_t repetitions;
+@property (nonatomic, retain) WeightExercise *exercise;
 
 @end

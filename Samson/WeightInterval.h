@@ -14,7 +14,7 @@
 
 @interface WeightInterval : AbstractInterval
 
-@property (nonatomic, strong) NSDecimalNumber *kilos;
-@property (nonatomic, strong) WeightExercise *exercise;
+@property (nonatomic) double kilos;
+@property (nonatomic, retain) WeightExercise *exercise;
 
 @end

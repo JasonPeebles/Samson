@@ -12,9 +12,9 @@
 
 @interface AbstractInterval : NSManagedObject
 
-@property (nonatomic, strong) NSNumber *repetitions;
-@property (nonatomic, strong) NSNumber *restSeconds;
-@property (nonatomic, strong) NSDate *timestamp;
-@property (nonatomic, strong) NSNumber *workSeconds;
+@property (nonatomic) int16_t repetitions;
+@property (nonatomic) int16_t restSeconds;
+@property (nonatomic) NSTimeInterval timestamp;
+@property (nonatomic) int16_t workSeconds;
 
 @end

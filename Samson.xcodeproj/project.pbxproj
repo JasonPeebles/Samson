@@ -15,16 +15,16 @@
 		770D562915E1DFD800EF29F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562815E1DFD800EF29F9 /* main.m */; };
 		770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562C15E1DFD800EF29F9 /* AppDelegate.m */; };
 		770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */; };
-		773A565315E1E06D00170646 /* DurationExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A565215E1E06D00170646 /* DurationExercise.m */; };
-		773A565615E1E06D00170646 /* DurationWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A565515E1E06D00170646 /* DurationWorkout.m */; };
-		773A565915E1E06D00170646 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A565815E1E06D00170646 /* Category.m */; };
-		773A565C15E1E06D00170646 /* DurationInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A565B15E1E06D00170646 /* DurationInterval.m */; };
-		773A565F15E1E06D00170646 /* SetWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A565E15E1E06D00170646 /* SetWorkout.m */; };
-		773A566215E1E06D00170646 /* WeightExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A566115E1E06D00170646 /* WeightExercise.m */; };
-		773A566515E1E06D00170646 /* WeightInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A566415E1E06D00170646 /* WeightInterval.m */; };
-		773A566815E1E06E00170646 /* AbstractInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A566715E1E06E00170646 /* AbstractInterval.m */; };
-		773A566B15E1E06E00170646 /* AbstractWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A566A15E1E06E00170646 /* AbstractWorkout.m */; };
-		773A566E15E1E06E00170646 /* AbstractExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A566D15E1E06E00170646 /* AbstractExercise.m */; };
+		77B3F04915E26112001013FC /* AbstractExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04815E26112001013FC /* AbstractExercise.m */; };
+		77B3F04C15E26113001013FC /* AbstractWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04B15E26113001013FC /* AbstractWorkout.m */; };
+		77B3F04F15E26113001013FC /* AbstractInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04E15E26113001013FC /* AbstractInterval.m */; };
+		77B3F05215E26113001013FC /* DurationExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05115E26113001013FC /* DurationExercise.m */; };
+		77B3F05515E26113001013FC /* DurationInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05415E26113001013FC /* DurationInterval.m */; };
+		77B3F05815E26113001013FC /* WeightExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05715E26113001013FC /* WeightExercise.m */; };
+		77B3F05B15E26113001013FC /* WeightInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05A15E26113001013FC /* WeightInterval.m */; };
+		77B3F05E15E26113001013FC /* SetWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F05D15E26113001013FC /* SetWorkout.m */; };
+		77B3F06115E26113001013FC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06015E26113001013FC /* Category.m */; };
+		77B3F06415E26114001013FC /* DurationWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06315E26114001013FC /* DurationWorkout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,26 +40,26 @@
 		770D562B15E1DFD800EF29F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		770D562C15E1DFD800EF29F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		770D562F15E1DFD800EF29F9 /* Samson.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Samson.xcdatamodel; sourceTree = "<group>"; };
-		773A565115E1E06D00170646 /* DurationExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationExercise.h; sourceTree = "<group>"; };
-		773A565215E1E06D00170646 /* DurationExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationExercise.m; sourceTree = "<group>"; };
-		773A565415E1E06D00170646 /* DurationWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationWorkout.h; sourceTree = "<group>"; };
-		773A565515E1E06D00170646 /* DurationWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationWorkout.m; sourceTree = "<group>"; };
-		773A565715E1E06D00170646 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
-		773A565815E1E06D00170646 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
-		773A565A15E1E06D00170646 /* DurationInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationInterval.h; sourceTree = "<group>"; };
-		773A565B15E1E06D00170646 /* DurationInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationInterval.m; sourceTree = "<group>"; };
-		773A565D15E1E06D00170646 /* SetWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetWorkout.h; sourceTree = "<group>"; };
-		773A565E15E1E06D00170646 /* SetWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetWorkout.m; sourceTree = "<group>"; };
-		773A566015E1E06D00170646 /* WeightExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightExercise.h; sourceTree = "<group>"; };
-		773A566115E1E06D00170646 /* WeightExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeightExercise.m; sourceTree = "<group>"; };
-		773A566315E1E06D00170646 /* WeightInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightInterval.h; sourceTree = "<group>"; };
-		773A566415E1E06D00170646 /* WeightInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeightInterval.m; sourceTree = "<group>"; };
-		773A566615E1E06E00170646 /* AbstractInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AbstractInterval.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		773A566715E1E06E00170646 /* AbstractInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractInterval.m; sourceTree = "<group>"; };
-		773A566915E1E06E00170646 /* AbstractWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AbstractWorkout.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		773A566A15E1E06E00170646 /* AbstractWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractWorkout.m; sourceTree = "<group>"; };
-		773A566C15E1E06E00170646 /* AbstractExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AbstractExercise.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		773A566D15E1E06E00170646 /* AbstractExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractExercise.m; sourceTree = "<group>"; };
+		77B3F04715E26112001013FC /* AbstractExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractExercise.h; sourceTree = "<group>"; };
+		77B3F04815E26112001013FC /* AbstractExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractExercise.m; sourceTree = "<group>"; };
+		77B3F04A15E26113001013FC /* AbstractWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractWorkout.h; sourceTree = "<group>"; };
+		77B3F04B15E26113001013FC /* AbstractWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractWorkout.m; sourceTree = "<group>"; };
+		77B3F04D15E26113001013FC /* AbstractInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractInterval.h; sourceTree = "<group>"; };
+		77B3F04E15E26113001013FC /* AbstractInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractInterval.m; sourceTree = "<group>"; };
+		77B3F05015E26113001013FC /* DurationExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationExercise.h; sourceTree = "<group>"; };
+		77B3F05115E26113001013FC /* DurationExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationExercise.m; sourceTree = "<group>"; };
+		77B3F05315E26113001013FC /* DurationInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationInterval.h; sourceTree = "<group>"; };
+		77B3F05415E26113001013FC /* DurationInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationInterval.m; sourceTree = "<group>"; };
+		77B3F05615E26113001013FC /* WeightExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightExercise.h; sourceTree = "<group>"; };
+		77B3F05715E26113001013FC /* WeightExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeightExercise.m; sourceTree = "<group>"; };
+		77B3F05915E26113001013FC /* WeightInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightInterval.h; sourceTree = "<group>"; };
+		77B3F05A15E26113001013FC /* WeightInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeightInterval.m; sourceTree = "<group>"; };
+		77B3F05C15E26113001013FC /* SetWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetWorkout.h; sourceTree = "<group>"; };
+		77B3F05D15E26113001013FC /* SetWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetWorkout.m; sourceTree = "<group>"; };
+		77B3F05F15E26113001013FC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		77B3F06015E26113001013FC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		77B3F06215E26114001013FC /* DurationWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationWorkout.h; sourceTree = "<group>"; };
+		77B3F06315E26114001013FC /* DurationWorkout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationWorkout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,10 +108,8 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
-				773A564F15E1E05800170646 /* NSManagedObject Subclasses */,
-				770D562B15E1DFD800EF29F9 /* AppDelegate.h */,
-				770D562C15E1DFD800EF29F9 /* AppDelegate.m */,
-				770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */,
+				77B3F03815E257B0001013FC /* Application Delegate */,
+				773A564F15E1E05800170646 /* Models */,
 				770D562315E1DFD800EF29F9 /* Supporting Files */,
 			);
 			path = Samson;
@@ -128,31 +126,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		773A564F15E1E05800170646 /* NSManagedObject Subclasses */ = {
+		773A564F15E1E05800170646 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				773A566C15E1E06E00170646 /* AbstractExercise.h */,
-				773A566D15E1E06E00170646 /* AbstractExercise.m */,
-				773A566915E1E06E00170646 /* AbstractWorkout.h */,
-				773A566A15E1E06E00170646 /* AbstractWorkout.m */,
-				773A566615E1E06E00170646 /* AbstractInterval.h */,
-				773A566715E1E06E00170646 /* AbstractInterval.m */,
-				773A566315E1E06D00170646 /* WeightInterval.h */,
-				773A566415E1E06D00170646 /* WeightInterval.m */,
-				773A566015E1E06D00170646 /* WeightExercise.h */,
-				773A566115E1E06D00170646 /* WeightExercise.m */,
-				773A565D15E1E06D00170646 /* SetWorkout.h */,
-				773A565E15E1E06D00170646 /* SetWorkout.m */,
-				773A565A15E1E06D00170646 /* DurationInterval.h */,
-				773A565B15E1E06D00170646 /* DurationInterval.m */,
-				773A565715E1E06D00170646 /* Category.h */,
-				773A565815E1E06D00170646 /* Category.m */,
-				773A565415E1E06D00170646 /* DurationWorkout.h */,
-				773A565515E1E06D00170646 /* DurationWorkout.m */,
-				773A565115E1E06D00170646 /* DurationExercise.h */,
-				773A565215E1E06D00170646 /* DurationExercise.m */,
+				77B3F04715E26112001013FC /* AbstractExercise.h */,
+				77B3F04815E26112001013FC /* AbstractExercise.m */,
+				77B3F06215E26114001013FC /* DurationWorkout.h */,
+				77B3F06315E26114001013FC /* DurationWorkout.m */,
+				77B3F05F15E26113001013FC /* Category.h */,
+				77B3F06015E26113001013FC /* Category.m */,
+				77B3F05C15E26113001013FC /* SetWorkout.h */,
+				77B3F05D15E26113001013FC /* SetWorkout.m */,
+				77B3F05915E26113001013FC /* WeightInterval.h */,
+				77B3F05A15E26113001013FC /* WeightInterval.m */,
+				77B3F05615E26113001013FC /* WeightExercise.h */,
+				77B3F05715E26113001013FC /* WeightExercise.m */,
+				77B3F05315E26113001013FC /* DurationInterval.h */,
+				77B3F05415E26113001013FC /* DurationInterval.m */,
+				77B3F05015E26113001013FC /* DurationExercise.h */,
+				77B3F05115E26113001013FC /* DurationExercise.m */,
+				77B3F04D15E26113001013FC /* AbstractInterval.h */,
+				77B3F04E15E26113001013FC /* AbstractInterval.m */,
+				77B3F04A15E26113001013FC /* AbstractWorkout.h */,
+				77B3F04B15E26113001013FC /* AbstractWorkout.m */,
+				770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */,
 			);
-			name = "NSManagedObject Subclasses";
+			name = Models;
+			sourceTree = "<group>";
+		};
+		77B3F03815E257B0001013FC /* Application Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				770D562B15E1DFD800EF29F9 /* AppDelegate.h */,
+				770D562C15E1DFD800EF29F9 /* AppDelegate.m */,
+			);
+			name = "Application Delegate";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,16 +228,16 @@
 				770D562915E1DFD800EF29F9 /* main.m in Sources */,
 				770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */,
 				770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */,
-				773A565315E1E06D00170646 /* DurationExercise.m in Sources */,
-				773A565615E1E06D00170646 /* DurationWorkout.m in Sources */,
-				773A565915E1E06D00170646 /* Category.m in Sources */,
-				773A565C15E1E06D00170646 /* DurationInterval.m in Sources */,
-				773A565F15E1E06D00170646 /* SetWorkout.m in Sources */,
-				773A566215E1E06D00170646 /* WeightExercise.m in Sources */,
-				773A566515E1E06D00170646 /* WeightInterval.m in Sources */,
-				773A566815E1E06E00170646 /* AbstractInterval.m in Sources */,
-				773A566B15E1E06E00170646 /* AbstractWorkout.m in Sources */,
-				773A566E15E1E06E00170646 /* AbstractExercise.m in Sources */,
+				77B3F04915E26112001013FC /* AbstractExercise.m in Sources */,
+				77B3F04C15E26113001013FC /* AbstractWorkout.m in Sources */,
+				77B3F04F15E26113001013FC /* AbstractInterval.m in Sources */,
+				77B3F05215E26113001013FC /* DurationExercise.m in Sources */,
+				77B3F05515E26113001013FC /* DurationInterval.m in Sources */,
+				77B3F05815E26113001013FC /* WeightExercise.m in Sources */,
+				77B3F05B15E26113001013FC /* WeightInterval.m in Sources */,
+				77B3F05E15E26113001013FC /* SetWorkout.m in Sources */,
+				77B3F06115E26113001013FC /* Category.m in Sources */,
+				77B3F06415E26114001013FC /* DurationWorkout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

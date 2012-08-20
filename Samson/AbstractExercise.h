@@ -13,8 +13,8 @@
 
 @interface AbstractExercise : NSManagedObject
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *sortOrder;
-@property (nonatomic, strong) Category *category;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) double sortOrder;
+@property (nonatomic, retain) Category *category;
 
 @end

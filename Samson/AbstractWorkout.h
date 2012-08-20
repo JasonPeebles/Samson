@@ -12,7 +12,7 @@
 
 @interface AbstractWorkout : NSManagedObject
 
-@property (nonatomic, strong) NSNumber *seconds;
-@property (nonatomic, strong) NSDate *timestamp;
+@property (nonatomic) int16_t seconds;
+@property (nonatomic) NSTimeInterval timestamp;
 
 @end
