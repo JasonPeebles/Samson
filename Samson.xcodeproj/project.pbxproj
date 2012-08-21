@@ -29,6 +29,8 @@
 		77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77BBDC8415E26EC400D0B79F /* InitialData.plist */; };
 		77BBDC8A15E2755200D0B79F /* AbstractExercise+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */; };
 		77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */; };
+		77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */; };
+		77D6E17D15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +73,10 @@
 		77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AbstractExercise+Custom.m"; sourceTree = "<group>"; };
 		77BBDC9015E279AB00D0B79F /* CatalogueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogueViewController.h; sourceTree = "<group>"; };
 		77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogueViewController.m; sourceTree = "<group>"; };
+		77C51DBE15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SingleSectionsAdditions.h"; sourceTree = "<group>"; };
+		77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SingleSectionsAdditions.m"; sourceTree = "<group>"; };
+		77D6E17B15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+SingleSectionAdditions.h"; sourceTree = "<group>"; };
+		77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+SingleSectionAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +125,7 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
+				77D6E17915E2ED5600098D62 /* Categeories */,
 				77BBDC8F15E2798600D0B79F /* View Controllers */,
 				77B3F06515E262BB001013FC /* Catalogue Store */,
 				77B3F03815E257B0001013FC /* Application Delegate */,
@@ -195,6 +202,17 @@
 				77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		77D6E17915E2ED5600098D62 /* Categeories */ = {
+			isa = PBXGroup;
+			children = (
+				77D6E17B15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.h */,
+				77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */,
+				77C51DBE15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.h */,
+				77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */,
+			);
+			name = Categeories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,6 +294,8 @@
 				77B3F06815E262E1001013FC /* CatalogueStore.m in Sources */,
 				77BBDC8A15E2755200D0B79F /* AbstractExercise+Custom.m in Sources */,
 				77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */,
+				77D6E17D15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m in Sources */,
+				77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
