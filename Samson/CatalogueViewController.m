@@ -9,6 +9,7 @@
 #import "CatalogueViewController.h"
 #import "CatalogueStore.h"
 #import "AbstractExercise.h"
+#import "UITableView+SingleSectionsAdditions.h"
 
 @interface CatalogueViewController ()
 
@@ -79,7 +80,7 @@
   }
   else
   {
-    int categoryIndex = index - indexOfSelectedCategory - exercisesCount;
+    int categoryIndex = index - exercisesCount;
     return [[cs allCategories] objectAtIndex:categoryIndex];
   }
 }
@@ -187,34 +188,27 @@
     id oldSelectedCategory = [cs selectedCategory];
     
     [tableView beginUpdates];
+    
     if (oldSelectedCategory)
     {
-      NSMutableArray *indexPathsToDelete = [NSMutableArray array];
-      
       int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
-      
-      [[cs exercisesForSelectedCategory] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:(oldSelectedCategoryIndex + idx + 1) inSection:0]];
-      }];
+     
+      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [cs setSelectedCategory:nil];
-      
-      [tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+        
+      [tableView deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
     }
     
     if (obj != oldSelectedCategory)
     {
-      NSMutableArray *indexPathsToInsert = [NSMutableArray array];
-    
       [cs setSelectedCategory:obj];
       
       int newSelectedCategoryIndex = [[cs allCategories] indexOfObject:obj];
       
-      [[cs exercisesForSelectedCategory] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:(newSelectedCategoryIndex + idx + 1) inSection:0]];
-      }];
+      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
-      [tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
+      [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
     }
     
     [tableView endUpdates];
