@@ -12,11 +12,13 @@
 #import "AbstractExercise+Custom.h"
 #import "WeightExercise.h"
 #import "DurationExercise.h"
+#import "UIActionSheet+Additions.h"
 
 @interface CatalogueStore ()
 
 - (void)loadDefaultStoreData;
-
+//Returns a category's exercises ordered by the sortOrder attribute
+- (NSMutableArray *)exercisesForCategory:(Category *)category;
 @end
 
 @implementation CatalogueStore
@@ -168,6 +170,13 @@
   }
 }
 
+- (NSMutableArray *)exercisesForCategory:(Category *)category;
+{
+  id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+  
+  return [[[category exercises] sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
+}
+
 - (void)loadAllExercisesForSelectedCategory;
 {
   _exercisesForSelectedCategory = nil;
@@ -176,10 +185,8 @@
   {
     return;
   }
-  
-  id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-  
-  _exercisesForSelectedCategory = [[[_selectedCategory exercises] sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
+    
+  _exercisesForSelectedCategory = [self exercisesForCategory:_selectedCategory];
 }
 
 - (void)moveCategoryAtIndex:(int)from toIndex:(int)to;
@@ -219,11 +226,6 @@
   return successful;
 }
 
-- (BOOL)objectIsExercise:(id)obj;
-{
-  return [obj isKindOfEntity:[NSEntityDescription entityForName:@"AbstractExercise" inManagedObjectContext:context]];
-}
-
 - (Category *)createCategory;
 {
   double sortOrder;
@@ -243,6 +245,17 @@
   [_allCategories insertObject:cat atIndex:0];
   
   return cat;
+}
+
+- (void)deleteCategory:(Category *)toDelete
+{
+  if (toDelete == _selectedCategory)
+  {
+    [self setSelectedCategory:nil];
+  }
+  
+  [context deleteObject:toDelete];
+  [_allCategories removeObjectIdenticalTo:toDelete];
 }
 
 - (AbstractExercise *)createExerciseUsingWeights:(BOOL)usesWeights;
@@ -268,6 +281,12 @@
   [_exercisesForSelectedCategory insertObject:exercise atIndex:0];
   
   return exercise;
+}
+
+- (void)deleteExercise:(AbstractExercise *)exercise
+{
+  [context deleteObject:exercise];
+  [_exercisesForSelectedCategory removeObjectIdenticalTo:exercise];
 }
 
 @end

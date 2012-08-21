@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CatalogueViewController : UITableViewController
+@interface CatalogueViewController : UITableViewController <UIActionSheetDelegate>
+{
+  NSIndexPath *indexPathMarkedForDeletion;
+}
 
 @end

@@ -31,9 +31,13 @@
 - (void)moveExerciseAtIndex:(int)from toIndex:(int)to;
 - (void)moveExerciseAtIndex:(int)from toCategoryAtIndex:(int)to;
 - (NSString *)catalogueArchivePath;
+//Commits the current changes in the context to persistent store
 - (BOOL)saveChanges;
-- (BOOL)objectIsExercise:(id)obj;
 - (Category *)createCategory;
+- (void)deleteCategory:(Category *)toDelete;
+//Creates either a WeightExercise (usesWeights == YES) or a DurationExercise (usesWeights == NO) concrete instance
+//for the selected Category
 - (AbstractExercise *)createExerciseUsingWeights:(BOOL)usesWeights;
+- (void)deleteExercise:(AbstractExercise *)exercise;
 
 @end

@@ -19,6 +19,12 @@
 
 @end
 
+typedef enum
+{
+  DeleteExerciseConfirmation,
+  DeleteCategoryConfirmation
+} ActionSheetIdentifiers;
+
 @implementation CatalogueViewController
 
 - (id)init
@@ -29,6 +35,8 @@
   {
     return nil;
   }
+  
+  indexPathMarkedForDeletion = nil;
   
   return self;
 }
@@ -90,7 +98,7 @@
   return [obj isKindOfClass:[AbstractExercise class]];
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableViewDataSource Protocol
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -101,10 +109,7 @@
 {
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
-  int rowCount = [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
-  NSLog(@"Row Count: %d", rowCount);
-  
-  return rowCount;
+  return [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -122,7 +127,7 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
   
-  [[cell textLabel] setText:[obj name]];
+  [[cell textLabel] setText:[obj description]];
   [[cell textLabel] setTextColor:isExercise ? [UIColor blueColor] : [UIColor blackColor]];
   // Configure the cell...
   
@@ -138,19 +143,45 @@
  }
  */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (editingStyle == UITableViewCellEditingStyleDelete)
+  {
+    id obj = [self objectAtRowIndex:[indexPath row]];
+    BOOL isExercise = [self objectIsExercise:obj];
+    
+    indexPathMarkedForDeletion = indexPath;
+    
+    if (isExercise)
+    {
+      id title = [NSString stringWithFormat:@"Are you sure you want to delete the exercise, \"%@\"", obj];
+      
+      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                     destructiveButtonTitle:@"Delete"
+                                          otherButtonTitles:nil];
+      
+      [actionSheet setTag:DeleteExerciseConfirmation];
+      [actionSheet show];
+    }
+    else
+    {
+      id title = [NSString stringWithFormat:@"Are you sure you want to delete the category, \"%@\"? This will delete all exercises for this category as well!", obj];
+      
+      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                     destructiveButtonTitle:@"Delete"
+                                          otherButtonTitles:nil];
+      
+      [actionSheet setTag:DeleteCategoryConfirmation];
+      [actionSheet show];
+    }
+  }
+}
+
 
 /*
  // Override to support rearranging the table view.
@@ -168,7 +199,12 @@
  }
  */
 
-#pragma mark - Table view delegate
+#pragma mark - UITableViewDelegate Protocol
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return UITableViewCellEditingStyleDelete;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -192,11 +228,11 @@
     if (oldSelectedCategory)
     {
       int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
-     
+      
       NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [cs setSelectedCategory:nil];
-        
+      
       [tableView deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
     }
     
@@ -212,6 +248,39 @@
     }
     
     [tableView endUpdates];
+  }
+}
+
+#pragma mark - UIActionSheetDelegate Protocol
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+  if (buttonIndex == [actionSheet cancelButtonIndex])
+  {
+    indexPathMarkedForDeletion = nil;
+    return;
+  }
+
+  int identifier = [actionSheet tag];
+
+  if (identifier == DeleteExerciseConfirmation)
+  {
+    id exercise = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
+    [[CatalogueStore sharedCatalogue] deleteExercise:exercise];
+    [[self tableView] deleteRowsAtIndexPaths:@[indexPathMarkedForDeletion] withRowAnimation:UITableViewRowAnimationFade];
+  }
+
+  if (identifier == DeleteCategoryConfirmation)
+  {
+    id categoryToDelete = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
+    id cs = [CatalogueStore sharedCatalogue];
+
+    BOOL isSelectedCategory = categoryToDelete == [cs selectedCategory];
+    int exercisesCount = isSelectedCategory ? [[cs exercisesForSelectedCategory] count] : 0;
+
+    NSRange indexRangeToDelete = NSMakeRange([indexPathMarkedForDeletion row], exercisesCount + 1);
+    [cs deleteCategory:categoryToDelete];
+
+    [[self tableView] deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
   }
 }
 
