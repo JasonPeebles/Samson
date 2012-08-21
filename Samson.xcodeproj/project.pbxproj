@@ -15,6 +15,8 @@
 		770D562915E1DFD800EF29F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562815E1DFD800EF29F9 /* main.m */; };
 		770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562C15E1DFD800EF29F9 /* AppDelegate.m */; };
 		770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */; };
+		778F76A815E334C90033DBD1 /* Category+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76A715E334C90033DBD1 /* Category+Custom.m */; };
+		778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */; };
 		77B3F04915E26112001013FC /* AbstractExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04815E26112001013FC /* AbstractExercise.m */; };
 		77B3F04C15E26113001013FC /* AbstractWorkout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04B15E26113001013FC /* AbstractWorkout.m */; };
 		77B3F04F15E26113001013FC /* AbstractInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04E15E26113001013FC /* AbstractInterval.m */; };
@@ -46,6 +48,10 @@
 		770D562B15E1DFD800EF29F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		770D562C15E1DFD800EF29F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		770D562F15E1DFD800EF29F9 /* Samson.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Samson.xcdatamodel; sourceTree = "<group>"; };
+		778F76A615E334C90033DBD1 /* Category+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Category+Custom.h"; sourceTree = "<group>"; };
+		778F76A715E334C90033DBD1 /* Category+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Category+Custom.m"; sourceTree = "<group>"; };
+		778F76AE15E33A5C0033DBD1 /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
+		778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
 		77B3F04715E26112001013FC /* AbstractExercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractExercise.h; sourceTree = "<group>"; };
 		77B3F04815E26112001013FC /* AbstractExercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractExercise.m; sourceTree = "<group>"; };
 		77B3F04A15E26113001013FC /* AbstractWorkout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractWorkout.h; sourceTree = "<group>"; };
@@ -158,6 +164,8 @@
 				77B3F06315E26114001013FC /* DurationWorkout.m */,
 				77B3F05F15E26113001013FC /* Category.h */,
 				77B3F06015E26113001013FC /* Category.m */,
+				778F76A615E334C90033DBD1 /* Category+Custom.h */,
+				778F76A715E334C90033DBD1 /* Category+Custom.m */,
 				77B3F05C15E26113001013FC /* SetWorkout.h */,
 				77B3F05D15E26113001013FC /* SetWorkout.m */,
 				77B3F05915E26113001013FC /* WeightInterval.h */,
@@ -207,6 +215,8 @@
 		77D6E17915E2ED5600098D62 /* Categeories */ = {
 			isa = PBXGroup;
 			children = (
+				778F76AE15E33A5C0033DBD1 /* UIActionSheet+Additions.h */,
+				778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */,
 				77D6E17B15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.h */,
 				77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */,
 				77C51DBE15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.h */,
@@ -296,6 +306,8 @@
 				77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */,
 				77D6E17D15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m in Sources */,
 				77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */,
+				778F76A815E334C90033DBD1 /* Category+Custom.m in Sources */,
+				778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

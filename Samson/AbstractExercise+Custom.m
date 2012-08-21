@@ -15,4 +15,9 @@
  return [NSString stringWithFormat:@"%@Exercise", usesWeights ? @"Weight" : @"Duration"];
 }
 
+- (NSString *)description;
+{
+  return [self name];
+}
+
 @end

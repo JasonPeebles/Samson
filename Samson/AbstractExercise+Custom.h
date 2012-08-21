@@ -11,5 +11,6 @@
 @interface AbstractExercise (Custom)
 
 + (NSString *)concreteEntityNameUsingWeights:(BOOL)usesWeights;
+- (NSString *)description;
 
 @end
