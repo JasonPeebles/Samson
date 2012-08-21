@@ -23,7 +23,7 @@
               withRowAnimation:animation];
 }
 
-- (void)insertRowsAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)insertRowAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
 {
   [self insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index]]
               withRowAnimation:animation];

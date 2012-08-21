@@ -12,7 +12,7 @@
 
 - (void)insertRowsAtIndexes:(NSArray *)rowIndexes withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)insertRowsInIndexRange:(NSRange)range withRowAnimation:(UITableViewRowAnimation) animation;
-- (void)insertRowsAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)insertRowAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteRowsAtIndexes:(NSArray *)rowIndexes withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteRowsInIndexRange:(NSRange)range withRowAnimation:(UITableViewRowAnimation) animation;
 - (void)deleteRowAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
