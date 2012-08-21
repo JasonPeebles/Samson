@@ -11,6 +11,7 @@
 @interface CatalogueViewController : UITableViewController <UIActionSheetDelegate>
 {
   NSIndexPath *indexPathMarkedForDeletion;
+  UITableViewCell *addCategoryRow;
 }
 
 @end

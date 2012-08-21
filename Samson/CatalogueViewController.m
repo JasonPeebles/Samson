@@ -9,6 +9,7 @@
 #import "CatalogueViewController.h"
 #import "CatalogueStore.h"
 #import "AbstractExercise.h"
+#import "NSIndexPath+SingleSectionAdditions.h"
 #import "UITableView+SingleSectionsAdditions.h"
 
 @interface CatalogueViewController ()
@@ -16,6 +17,8 @@
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 - (int)rowIndexOfObject:(id)obj;
 - (BOOL)objectIsExercise:(id)obj;
+- (void)scrollToDefaultPosition;
+- (CGFloat)addCategoryOffsetThreshold;
 
 @end
 
@@ -50,11 +53,19 @@ typedef enum
 {
   [super viewDidLoad];
   
+  [[self tableView] setContentInset:UIEdgeInsetsMake(-[self addCategoryOffsetThreshold], 0, 0, 0)];
+//  [[self tableView] setContentOffset:CGPointMake(0, -ADD_CATEGORY_OFFSET_THRESHOLD)];
   // Uncomment the following line to preserve selection between presentations.
   // self.clearsSelectionOnViewWillAppear = NO;
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [self scrollToDefaultPosition];
 }
 
 - (void)viewDidUnload
@@ -64,31 +75,51 @@ typedef enum
   // e.g. self.myOutlet = nil;
 }
 
+- (void)scrollToDefaultPosition;
+{
+  if ([[[CatalogueStore sharedCatalogue] allCategories] count] == 0)
+  {
+    return;
+  }
+  
+  [[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+- (CGFloat)addCategoryOffsetThreshold;
+{
+  return [[self tableView] rowHeight];
+}
+
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 {
+  //This is the Pull-to-add Row
+  if (index == 0)
+  {
+    return nil;
+  }
+  
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   id selectedCategory = [cs selectedCategory];
   
   if (!selectedCategory)
   {
-    return [[cs allCategories] objectAtIndex:index];
+    return [[cs allCategories] objectAtIndex:(index - 1)];
   }
   
   int indexOfSelectedCategory = [[cs allCategories] indexOfObject:selectedCategory];
   int exercisesCount = [[cs exercisesForSelectedCategory] count];
   
-  if (index <= indexOfSelectedCategory)
+  if (index <= indexOfSelectedCategory + 1)
   {
-    return [[cs allCategories] objectAtIndex:index];
+    return [[cs allCategories] objectAtIndex:(index - 1)];
   }
-  else if (index <= indexOfSelectedCategory + exercisesCount)
+  else if (index <= indexOfSelectedCategory + exercisesCount + 1)
   {
-    int exerciseIndex = index - indexOfSelectedCategory - 1;
+    int exerciseIndex = index - indexOfSelectedCategory - 2;
     return [[cs exercisesForSelectedCategory] objectAtIndex:exerciseIndex];
   }
   else
   {
-    int categoryIndex = index - exercisesCount;
+    int categoryIndex = index - exercisesCount - 1;
     return [[cs allCategories] objectAtIndex:categoryIndex];
   }
 }
@@ -109,11 +140,27 @@ typedef enum
 {
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
-  return [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
+  //Pull-To-Add-Category Row + Categories + Displayed Exercises 
+  return 1 + [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([indexPath row] == 0)
+  {
+    NSString *CellIdentifier = @"AddCategoryRow";
+    
+    addCategoryRow = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!addCategoryRow)
+    {
+      addCategoryRow = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    [[addCategoryRow textLabel] setText:@"Pull to add category"];
+    return addCategoryRow;
+  }
+  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
@@ -203,11 +250,22 @@ typedef enum
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([indexPath row] == 0)
+  {
+    return UITableViewCellEditingStyleNone;
+  }
+  
   return UITableViewCellEditingStyleDelete;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([indexPath row] == 0)
+  {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    return;
+  }
+  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
@@ -229,7 +287,7 @@ typedef enum
     {
       int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
       
-      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
       
       [cs setSelectedCategory:nil];
       
@@ -242,7 +300,7 @@ typedef enum
       
       int newSelectedCategoryIndex = [[cs allCategories] indexOfObject:obj];
       
-      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
       
       [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -274,8 +332,7 @@ typedef enum
     id categoryToDelete = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
     id cs = [CatalogueStore sharedCatalogue];
 
-    BOOL isSelectedCategory = categoryToDelete == [cs selectedCategory];
-    int exercisesCount = isSelectedCategory ? [[cs exercisesForSelectedCategory] count] : 0;
+    int exercisesCount = (categoryToDelete == [cs selectedCategory]) ? [[cs exercisesForSelectedCategory] count] : 0;
 
     NSRange indexRangeToDelete = NSMakeRange([indexPathMarkedForDeletion row], exercisesCount + 1);
     [cs deleteCategory:categoryToDelete];
@@ -284,4 +341,38 @@ typedef enum
   }
 }
 
+#pragma mark - UIScrollViewDelegate Protocol
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+  CGFloat offset = [scrollView contentOffset].y;
+  
+  if (offset < 0)
+  {
+    id newCategory = [[CatalogueStore sharedCatalogue] createCategory];
+    [newCategory setName:@"New Category"];
+    
+    [[self tableView] insertRowAtIndex:1 withRowAnimation:UITableViewRowAnimationFade];
+  }
+  else if (offset < [self addCategoryOffsetThreshold])
+  {
+    [self scrollToDefaultPosition];
+  }
+}
+
+#warning FIX THIS: Only need assignment during sign switch for offset
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+  NSLog(@"Scroll Offset: %f", [scrollView contentOffset].y);
+  
+  CGFloat offset = [scrollView contentOffset].y;
+  
+  if (offset < 0)
+  {
+    [[addCategoryRow textLabel] setText:@"Release to add category"];
+  }
+  else
+  {
+    [[addCategoryRow textLabel] setText:@"Pull to add category"];
+  }
+}
 @end
