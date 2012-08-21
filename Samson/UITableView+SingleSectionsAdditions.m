@@ -25,7 +25,7 @@
 
 - (void)insertRowsAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
 {
-  [self insertRowsAtIndexPaths:@[[NSIndexPath indexPathWithIndex:index]]
+  [self insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index]]
               withRowAnimation:animation];
 }
 
@@ -43,7 +43,7 @@
 
 - (void)deleteRowAtIndex:(NSInteger)index withRowAnimation:(UITableViewRowAnimation)animation;
 {
-  [self deleteRowsAtIndexPaths:@[[NSIndexPath indexPathWithIndex:index]]
+  [self deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index]]
            withRowAnimation:animation];
 }
 
