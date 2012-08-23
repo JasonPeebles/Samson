@@ -44,15 +44,15 @@
         <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WeightExercise" inverseName="workouts" inverseEntity="WeightExercise" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractExercise" positionX="0" positionY="0" width="128" height="88"/>
-        <element name="AbstractInterval" positionX="0" positionY="0" width="128" height="103"/>
-        <element name="AbstractWorkout" positionX="0" positionY="0" width="128" height="73"/>
-        <element name="Category" positionX="0" positionY="0" width="128" height="88"/>
-        <element name="DurationExercise" positionX="0" positionY="0" width="128" height="73"/>
-        <element name="DurationInterval" positionX="0" positionY="0" width="128" height="58"/>
-        <element name="DurationWorkout" positionX="0" positionY="0" width="128" height="58"/>
-        <element name="WeightExercise" positionX="0" positionY="0" width="128" height="73"/>
-        <element name="WeightInterval" positionX="0" positionY="0" width="128" height="73"/>
-        <element name="WeightWorkout" positionX="0" positionY="0" width="128" height="88"/>
+        <element name="AbstractExercise" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AbstractInterval" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AbstractWorkout" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DurationExercise" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DurationInterval" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DurationWorkout" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WeightExercise" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WeightInterval" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WeightWorkout" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

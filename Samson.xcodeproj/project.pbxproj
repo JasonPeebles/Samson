@@ -15,6 +15,8 @@
 		770D562915E1DFD800EF29F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562815E1DFD800EF29F9 /* main.m */; };
 		770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562C15E1DFD800EF29F9 /* AppDelegate.m */; };
 		770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */; };
+		77109E9E15E39F350029B93B /* CatalogueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77109E9D15E39F350029B93B /* CatalogueCell.xib */; };
+		7716DB6015E3704A00A6DA67 /* CatalogueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7716DB5F15E3704A00A6DA67 /* CatalogueCell.m */; };
 		778F76A815E334C90033DBD1 /* Category+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76A715E334C90033DBD1 /* Category+Custom.m */; };
 		778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */; };
 		77B3F04915E26112001013FC /* AbstractExercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F04815E26112001013FC /* AbstractExercise.m */; };
@@ -48,6 +50,9 @@
 		770D562B15E1DFD800EF29F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		770D562C15E1DFD800EF29F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		770D562F15E1DFD800EF29F9 /* Samson.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Samson.xcdatamodel; sourceTree = "<group>"; };
+		77109E9D15E39F350029B93B /* CatalogueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogueCell.xib; sourceTree = "<group>"; };
+		7716DB5E15E3704A00A6DA67 /* CatalogueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogueCell.h; sourceTree = "<group>"; };
+		7716DB5F15E3704A00A6DA67 /* CatalogueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogueCell.m; sourceTree = "<group>"; };
 		778F76A615E334C90033DBD1 /* Category+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Category+Custom.h"; sourceTree = "<group>"; };
 		778F76A715E334C90033DBD1 /* Category+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Category+Custom.m"; sourceTree = "<group>"; };
 		778F76AE15E33A5C0033DBD1 /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
@@ -131,6 +136,7 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
+				7716DB5B15E36FFE00A6DA67 /* Views */,
 				77D6E17915E2ED5600098D62 /* Categeories */,
 				77BBDC8F15E2798600D0B79F /* View Controllers */,
 				77B3F06515E262BB001013FC /* Catalogue Store */,
@@ -151,6 +157,32 @@
 				770D562A15E1DFD800EF29F9 /* Samson-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		77109EA015E39F3A0029B93B /* Category Cell */ = {
+			isa = PBXGroup;
+			children = (
+				7716DB5E15E3704A00A6DA67 /* CatalogueCell.h */,
+				7716DB5F15E3704A00A6DA67 /* CatalogueCell.m */,
+				77109E9D15E39F350029B93B /* CatalogueCell.xib */,
+			);
+			name = "Category Cell";
+			sourceTree = "<group>";
+		};
+		7716DB5B15E36FFE00A6DA67 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7716DB5D15E3700400A6DA67 /* Table View Cells */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		7716DB5D15E3700400A6DA67 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77109EA015E39F3A0029B93B /* Category Cell */,
+			);
+			name = "Table View Cells";
 			sourceTree = "<group>";
 		};
 		773A564F15E1E05800170646 /* Models */ = {
@@ -278,6 +310,7 @@
 			files = (
 				770D562715E1DFD800EF29F9 /* InfoPlist.strings in Resources */,
 				77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */,
+				77109E9E15E39F350029B93B /* CatalogueCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +341,7 @@
 				77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */,
 				778F76A815E334C90033DBD1 /* Category+Custom.m in Sources */,
 				778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */,
+				7716DB6015E3704A00A6DA67 /* CatalogueCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,4 +14,6 @@
   UITableViewCell *addCategoryRow;
 }
 
+- (void)markIndexPathForDeletion:(NSIndexPath *)indexPath;
+
 @end
