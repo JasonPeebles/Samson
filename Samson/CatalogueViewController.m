@@ -14,10 +14,11 @@
 
 @interface CatalogueViewController ()
 
+@property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
+
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 - (int)rowIndexOfObject:(id)obj;
 - (BOOL)objectIsExercise:(id)obj;
-- (void)scrollToDefaultPosition;
 - (CGFloat)addCategoryOffsetThreshold;
 
 @end
@@ -40,6 +41,7 @@ typedef enum
   }
   
   indexPathMarkedForDeletion = nil;
+  [self setRecognizer:[TableViewGestureRecognizer addTableViewGestureRecognizerTo:[self tableView] withGestureDelegate:self]];
   
   return self;
 }
@@ -53,19 +55,10 @@ typedef enum
 {
   [super viewDidLoad];
   
-  [[self tableView] setContentInset:UIEdgeInsetsMake(-[self addCategoryOffsetThreshold], 0, 0, 0)];
-//  [[self tableView] setContentOffset:CGPointMake(0, -ADD_CATEGORY_OFFSET_THRESHOLD)];
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
+//  [[self tableView] setContentInset:UIEdgeInsetsMake(-[self addCategoryOffsetThreshold], 0, 0, 0)];
   
-  // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-  [super viewWillAppear:animated];
-  [self scrollToDefaultPosition];
+//  id categoryCellNib = [UINib nibWithNibName:[CatalogueCell nibName] bundle:nil];
+//  [[self tableView] registerNib:categoryCellNib forCellReuseIdentifier:[CatalogueCell reuseIdentifier]];
 }
 
 - (void)viewDidUnload
@@ -75,51 +68,36 @@ typedef enum
   // e.g. self.myOutlet = nil;
 }
 
-- (void)scrollToDefaultPosition;
-{
-  if ([[[CatalogueStore sharedCatalogue] allCategories] count] == 0)
-  {
-    return;
-  }
-  
-  [[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
 - (CGFloat)addCategoryOffsetThreshold;
 {
   return [[self tableView] rowHeight];
 }
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
-{
-  //This is the Pull-to-add Row
-  if (index == 0)
-  {
-    return nil;
-  }
-  
+{  
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   id selectedCategory = [cs selectedCategory];
   
   if (!selectedCategory)
   {
-    return [[cs allCategories] objectAtIndex:(index - 1)];
+    return [[cs allCategories] objectAtIndex:index];
   }
   
   int indexOfSelectedCategory = [[cs allCategories] indexOfObject:selectedCategory];
   int exercisesCount = [[cs exercisesForSelectedCategory] count];
   
-  if (index <= indexOfSelectedCategory + 1)
+  if (index <= indexOfSelectedCategory)
   {
-    return [[cs allCategories] objectAtIndex:(index - 1)];
+    return [[cs allCategories] objectAtIndex:index];
   }
-  else if (index <= indexOfSelectedCategory + exercisesCount + 1)
+  else if (index <= indexOfSelectedCategory + exercisesCount)
   {
-    int exerciseIndex = index - indexOfSelectedCategory - 2;
+    int exerciseIndex = index - indexOfSelectedCategory - 1;
     return [[cs exercisesForSelectedCategory] objectAtIndex:exerciseIndex];
   }
   else
   {
-    int categoryIndex = index - exercisesCount - 1;
+    int categoryIndex = index - exercisesCount;
     return [[cs allCategories] objectAtIndex:categoryIndex];
   }
 }
@@ -127,6 +105,42 @@ typedef enum
 - (BOOL)objectIsExercise:(id)obj;
 {
   return [obj isKindOfClass:[AbstractExercise class]];
+}
+
+- (void)markIndexPathForDeletion:(NSIndexPath *)indexPath;
+{
+  indexPathMarkedForDeletion = indexPath;
+
+  id obj = [self objectAtRowIndex:[indexPath row]];
+  BOOL isExercise = [self objectIsExercise:obj];
+    
+  if (isExercise)
+  {
+    id title = [NSString stringWithFormat:@"Are you sure you want to delete the exercise, \"%@\"", obj];
+    
+    id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                 delegate:self
+                                        cancelButtonTitle:@"Cancel"
+                                   destructiveButtonTitle:@"Delete"
+                                        otherButtonTitles:nil];
+    
+    [actionSheet setTag:DeleteExerciseConfirmation];
+    [actionSheet show];
+  }
+  else
+  {
+    id title = [NSString stringWithFormat:@"Are you sure you want to delete the category, \"%@\"? This will delete all exercises for this category as well!", obj];
+    
+    id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                 delegate:self
+                                        cancelButtonTitle:@"Cancel"
+                                   destructiveButtonTitle:@"Delete"
+                                        otherButtonTitles:nil];
+    
+    [actionSheet setTag:DeleteCategoryConfirmation];
+    [actionSheet show];
+  }
+
 }
 
 #pragma mark - UITableViewDataSource Protocol
@@ -140,45 +154,30 @@ typedef enum
 {
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
-  //Pull-To-Add-Category Row + Categories + Displayed Exercises 
-  return 1 + [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
+  //Pull-To-Add-Category Row + Categories + Displayed Exercises
+  return [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([indexPath row] == 0)
-  {
-    NSString *CellIdentifier = @"AddCategoryRow";
-    
-    addCategoryRow = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!addCategoryRow)
-    {
-      addCategoryRow = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [[addCategoryRow textLabel] setText:@"Pull to add category"];
-    return addCategoryRow;
-  }
-  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
   
-  NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
-  
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-  
-  if (!cell)
-  {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  }
-  
-  [[cell textLabel] setText:[obj description]];
+    NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell)
+    {
+      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    [[cell textLabel] setText:[obj description]];
   [[cell textLabel] setTextColor:isExercise ? [UIColor blueColor] : [UIColor blackColor]];
-  // Configure the cell...
-  
-  return cell;
+    // Configure the cell...
+    
+    return cell;
 }
 
 /*
@@ -190,44 +189,44 @@ typedef enum
  }
  */
 
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-  if (editingStyle == UITableViewCellEditingStyleDelete)
-  {
-    id obj = [self objectAtRowIndex:[indexPath row]];
-    BOOL isExercise = [self objectIsExercise:obj];
-    
-    indexPathMarkedForDeletion = indexPath;
-    
-    if (isExercise)
-    {
-      id title = [NSString stringWithFormat:@"Are you sure you want to delete the exercise, \"%@\"", obj];
-      
-      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                     destructiveButtonTitle:@"Delete"
-                                          otherButtonTitles:nil];
-      
-      [actionSheet setTag:DeleteExerciseConfirmation];
-      [actionSheet show];
-    }
-    else
-    {
-      id title = [NSString stringWithFormat:@"Are you sure you want to delete the category, \"%@\"? This will delete all exercises for this category as well!", obj];
-      
-      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                     destructiveButtonTitle:@"Delete"
-                                          otherButtonTitles:nil];
-      
-      [actionSheet setTag:DeleteCategoryConfirmation];
-      [actionSheet show];
-    }
-  }
-}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//  if (editingStyle == UITableViewCellEditingStyleDelete)
+//  {
+//    id obj = [self objectAtRowIndex:[indexPath row]];
+//    BOOL isExercise = [self objectIsExercise:obj];
+//    
+//    indexPathMarkedForDeletion = indexPath;
+//    
+//    if (isExercise)
+//    {
+//      id title = [NSString stringWithFormat:@"Are you sure you want to delete the exercise, \"%@\"", obj];
+//      
+//      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"Cancel"
+//                                     destructiveButtonTitle:@"Delete"
+//                                          otherButtonTitles:nil];
+//      
+//      [actionSheet setTag:DeleteExerciseConfirmation];
+//      [actionSheet show];
+//    }
+//    else
+//    {
+//      id title = [NSString stringWithFormat:@"Are you sure you want to delete the category, \"%@\"? This will delete all exercises for this category as well!", obj];
+//      
+//      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"Cancel"
+//                                     destructiveButtonTitle:@"Delete"
+//                                          otherButtonTitles:nil];
+//      
+//      [actionSheet setTag:DeleteCategoryConfirmation];
+//      [actionSheet show];
+//    }
+//  }
+//}
 
 
 /*
@@ -237,35 +236,20 @@ typedef enum
  }
  */
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 #pragma mark - UITableViewDelegate Protocol
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-  if ([indexPath row] == 0)
-  {
-    return UITableViewCellEditingStyleNone;
-  }
-  
-  return UITableViewCellEditingStyleDelete;
-}
+//
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//  if ([indexPath row] == 0)
+//  {
+//    return UITableViewCellEditingStyleNone;
+//  }
+//  
+//  return UITableViewCellEditingStyleDelete;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([indexPath row] == 0)
-  {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    return;
-  }
-  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
@@ -287,7 +271,7 @@ typedef enum
     {
       int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
       
-      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [cs setSelectedCategory:nil];
       
@@ -300,7 +284,7 @@ typedef enum
       
       int newSelectedCategoryIndex = [[cs allCategories] indexOfObject:obj];
       
-      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -317,62 +301,49 @@ typedef enum
     indexPathMarkedForDeletion = nil;
     return;
   }
-
+  
   int identifier = [actionSheet tag];
-
+  
   if (identifier == DeleteExerciseConfirmation)
   {
     id exercise = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
     [[CatalogueStore sharedCatalogue] deleteExercise:exercise];
     [[self tableView] deleteRowsAtIndexPaths:@[indexPathMarkedForDeletion] withRowAnimation:UITableViewRowAnimationFade];
   }
-
+  
   if (identifier == DeleteCategoryConfirmation)
   {
     id categoryToDelete = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
     id cs = [CatalogueStore sharedCatalogue];
-
+    
     int exercisesCount = (categoryToDelete == [cs selectedCategory]) ? [[cs exercisesForSelectedCategory] count] : 0;
-
+    
     NSRange indexRangeToDelete = NSMakeRange([indexPathMarkedForDeletion row], exercisesCount + 1);
     [cs deleteCategory:categoryToDelete];
-
+    
     [[self tableView] deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
   }
 }
 
-#pragma mark - UIScrollViewDelegate Protocol
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+#pragma mark - TableViewGestureRowMoveDelegate Protocol
+- (BOOL)gestureRecognizer:(TableViewGestureRecognizer *)recognizer canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-  CGFloat offset = [scrollView contentOffset].y;
-  
-  if (offset < 0)
-  {
-    id newCategory = [[CatalogueStore sharedCatalogue] createCategory];
-    [newCategory setName:@"New Category"];
-    
-    [[self tableView] insertRowAtIndex:1 withRowAnimation:UITableViewRowAnimationFade];
-  }
-  else if (offset < [self addCategoryOffsetThreshold])
-  {
-    [self scrollToDefaultPosition];
-  }
+  return YES;
 }
 
-#warning FIX THIS: Only need assignment during sign switch for offset
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer willBeginRowMoveAtIndexPath:(NSIndexPath *)indexPath;
 {
-  NSLog(@"Scroll Offset: %f", [scrollView contentOffset].y);
-  
-  CGFloat offset = [scrollView contentOffset].y;
-  
-  if (offset < 0)
-  {
-    [[addCategoryRow textLabel] setText:@"Release to add category"];
-  }
-  else
-  {
-    [[addCategoryRow textLabel] setText:@"Pull to add category"];
-  }
+  id cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+  [cell setBackgroundColor:[UIColor lightGrayColor]];
+  return;
+}
+
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer moveRowFromIndexPath:(NSIndexPath *)from toIndexPath:(NSIndexPath *)to;
+{
+  return;
+}
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer didFinishRowMoveAtIndexPath:(NSIndexPath *)indexPath;
+{
+  return;
 }
 @end
