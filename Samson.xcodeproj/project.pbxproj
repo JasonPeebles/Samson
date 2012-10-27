@@ -31,8 +31,10 @@
 		77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77BBDC8415E26EC400D0B79F /* InitialData.plist */; };
 		77BBDC8A15E2755200D0B79F /* AbstractExercise+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */; };
 		77BBDC9215E279AB00D0B79F /* CatalogueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */; };
+		77C1C89015EE4F75005601D1 /* TableViewGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C1C88F15EE4F75005601D1 /* TableViewGestureRecognizer.m */; };
 		77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */; };
 		77D6E17D15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */; };
+		77EECFE2163B717D002EE860 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EECFE1163B717D002EE860 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,10 +81,13 @@
 		77BBDC8915E2755200D0B79F /* AbstractExercise+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AbstractExercise+Custom.m"; sourceTree = "<group>"; };
 		77BBDC9015E279AB00D0B79F /* CatalogueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogueViewController.h; sourceTree = "<group>"; };
 		77BBDC9115E279AB00D0B79F /* CatalogueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogueViewController.m; sourceTree = "<group>"; };
+		77C1C88E15EE4F75005601D1 /* TableViewGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewGestureRecognizer.h; sourceTree = "<group>"; };
+		77C1C88F15EE4F75005601D1 /* TableViewGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewGestureRecognizer.m; sourceTree = "<group>"; };
 		77C51DBE15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SingleSectionsAdditions.h"; sourceTree = "<group>"; };
 		77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SingleSectionsAdditions.m"; sourceTree = "<group>"; };
 		77D6E17B15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+SingleSectionAdditions.h"; sourceTree = "<group>"; };
 		77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+SingleSectionAdditions.m"; sourceTree = "<group>"; };
+		77EECFE1163B717D002EE860 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +108,7 @@
 		770D560B15E1DFD800EF29F9 = {
 			isa = PBXGroup;
 			children = (
+				77EECFE1163B717D002EE860 /* Default-568h@2x.png */,
 				770D562215E1DFD800EF29F9 /* Samson */,
 				770D561915E1DFD800EF29F9 /* Frameworks */,
 				770D561715E1DFD800EF29F9 /* Products */,
@@ -131,6 +137,7 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
+				77C1C88C15EE4F48005601D1 /* Table View Gesture Recognizer */,
 				77D6E17915E2ED5600098D62 /* Categeories */,
 				77BBDC8F15E2798600D0B79F /* View Controllers */,
 				77B3F06515E262BB001013FC /* Catalogue Store */,
@@ -212,6 +219,15 @@
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
+		77C1C88C15EE4F48005601D1 /* Table View Gesture Recognizer */ = {
+			isa = PBXGroup;
+			children = (
+				77C1C88E15EE4F75005601D1 /* TableViewGestureRecognizer.h */,
+				77C1C88F15EE4F75005601D1 /* TableViewGestureRecognizer.m */,
+			);
+			name = "Table View Gesture Recognizer";
+			sourceTree = "<group>";
+		};
 		77D6E17915E2ED5600098D62 /* Categeories */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,6 +294,7 @@
 			files = (
 				770D562715E1DFD800EF29F9 /* InfoPlist.strings in Resources */,
 				77BBDC8515E26EC400D0B79F /* InitialData.plist in Resources */,
+				77EECFE2163B717D002EE860 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +325,7 @@
 				77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */,
 				778F76A815E334C90033DBD1 /* Category+Custom.m in Sources */,
 				778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */,
+				77C1C89015EE4F75005601D1 /* TableViewGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,7 +351,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jason Peebles (GML68C9397)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -347,7 +365,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				"OTHER_CFLAGS[arch=*]" = "-g";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7CD74EFB-914A-47BB-934A-A51D41F3F060";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -367,7 +387,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
