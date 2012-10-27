@@ -16,7 +16,7 @@
 //Sent to the delegate just before a long press begins.  Return NO to cancel move,
 - (BOOL)gestureRecognizer:(TableViewGestureRecognizer *)recognizer canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
 //Sent to the delegate before row movement begins.  Allows delegate to set up a placeholder cell if desired.
-- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer willBeginRowMoveAtIndex:(NSIndexPath *)indexPath;
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer willBeginRowMoveAtIndexPath:(NSIndexPath *)indexPath;
 //Sent to the delegate each time a row changes position
 - (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer moveRowFromIndexPath:(NSIndexPath *)from toIndexPath:(NSIndexPath *)to;
 //Sent once the gesture has finished, indicating the user has "dropped" the cell in the desired indexPath

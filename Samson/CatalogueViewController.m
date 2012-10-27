@@ -11,14 +11,14 @@
 #import "AbstractExercise.h"
 #import "NSIndexPath+SingleSectionAdditions.h"
 #import "UITableView+SingleSectionsAdditions.h"
-#import "CatalogueCell.h"
 
 @interface CatalogueViewController ()
+
+@property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 - (int)rowIndexOfObject:(id)obj;
 - (BOOL)objectIsExercise:(id)obj;
-- (void)scrollToDefaultPosition;
 - (CGFloat)addCategoryOffsetThreshold;
 
 @end
@@ -41,6 +41,7 @@ typedef enum
   }
   
   indexPathMarkedForDeletion = nil;
+  [self setRecognizer:[TableViewGestureRecognizer addTableViewGestureRecognizerTo:[self tableView] withGestureDelegate:self]];
   
   return self;
 }
@@ -54,16 +55,10 @@ typedef enum
 {
   [super viewDidLoad];
   
-  [[self tableView] setContentInset:UIEdgeInsetsMake(-[self addCategoryOffsetThreshold], 0, 0, 0)];
+//  [[self tableView] setContentInset:UIEdgeInsetsMake(-[self addCategoryOffsetThreshold], 0, 0, 0)];
   
-  id categoryCellNib = [UINib nibWithNibName:[CatalogueCell nibName] bundle:nil];
-  [[self tableView] registerNib:categoryCellNib forCellReuseIdentifier:[CatalogueCell reuseIdentifier]];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-  [super viewWillAppear:animated];
-  [self scrollToDefaultPosition];
+//  id categoryCellNib = [UINib nibWithNibName:[CatalogueCell nibName] bundle:nil];
+//  [[self tableView] registerNib:categoryCellNib forCellReuseIdentifier:[CatalogueCell reuseIdentifier]];
 }
 
 - (void)viewDidUnload
@@ -73,51 +68,36 @@ typedef enum
   // e.g. self.myOutlet = nil;
 }
 
-- (void)scrollToDefaultPosition;
-{
-  if ([[[CatalogueStore sharedCatalogue] allCategories] count] == 0)
-  {
-    return;
-  }
-  
-  [[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
 - (CGFloat)addCategoryOffsetThreshold;
 {
   return [[self tableView] rowHeight];
 }
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
-{
-  //This is the Pull-to-add Row
-  if (index == 0)
-  {
-    return nil;
-  }
-  
+{  
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   id selectedCategory = [cs selectedCategory];
   
   if (!selectedCategory)
   {
-    return [[cs allCategories] objectAtIndex:(index - 1)];
+    return [[cs allCategories] objectAtIndex:index];
   }
   
   int indexOfSelectedCategory = [[cs allCategories] indexOfObject:selectedCategory];
   int exercisesCount = [[cs exercisesForSelectedCategory] count];
   
-  if (index <= indexOfSelectedCategory + 1)
+  if (index <= indexOfSelectedCategory)
   {
-    return [[cs allCategories] objectAtIndex:(index - 1)];
+    return [[cs allCategories] objectAtIndex:index];
   }
-  else if (index <= indexOfSelectedCategory + exercisesCount + 1)
+  else if (index <= indexOfSelectedCategory + exercisesCount)
   {
-    int exerciseIndex = index - indexOfSelectedCategory - 2;
+    int exerciseIndex = index - indexOfSelectedCategory - 1;
     return [[cs exercisesForSelectedCategory] objectAtIndex:exerciseIndex];
   }
   else
   {
-    int categoryIndex = index - exercisesCount - 1;
+    int categoryIndex = index - exercisesCount;
     return [[cs allCategories] objectAtIndex:categoryIndex];
   }
 }
@@ -175,32 +155,15 @@ typedef enum
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
   //Pull-To-Add-Category Row + Categories + Displayed Exercises
-  return 1 + [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
+  return [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([indexPath row] == 0)
-  {
-    NSString *CellIdentifier = @"AddCategoryRow";
-    
-    addCategoryRow = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!addCategoryRow)
-    {
-      addCategoryRow = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [[addCategoryRow textLabel] setText:@"Pull to add category"];
-    return addCategoryRow;
-  }
-  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
   
-  if (isExercise)
-  {
     NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -211,21 +174,10 @@ typedef enum
     }
     
     [[cell textLabel] setText:[obj description]];
-    [[cell textLabel] setTextColor:[UIColor blueColor]];
+  [[cell textLabel] setTextColor:isExercise ? [UIColor blueColor] : [UIColor blackColor]];
     // Configure the cell...
     
     return cell;
-  }
-  else
-  {
-    CatalogueCell *cell = [tableView dequeueReusableCellWithIdentifier:[CatalogueCell reuseIdentifier]];
-    
-    [cell setController:self];
-    [cell setTableView:tableView];
-    [cell setCatalogueEntry:obj];
-    
-    return cell;
-  }
 }
 
 /*
@@ -284,15 +236,6 @@ typedef enum
  }
  */
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 #pragma mark - UITableViewDelegate Protocol
 //
 //- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -307,12 +250,6 @@ typedef enum
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([indexPath row] == 0)
-  {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    return;
-  }
-  
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
@@ -334,7 +271,7 @@ typedef enum
     {
       int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
       
-      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [cs setSelectedCategory:nil];
       
@@ -347,7 +284,7 @@ typedef enum
       
       int newSelectedCategoryIndex = [[cs allCategories] indexOfObject:obj];
       
-      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 2, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
       
       [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -388,37 +325,25 @@ typedef enum
   }
 }
 
-#pragma mark - UIScrollViewDelegate Protocol
-#warning TODO: Prompt user for Category name
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+#pragma mark - TableViewGestureRowMoveDelegate Protocol
+- (BOOL)gestureRecognizer:(TableViewGestureRecognizer *)recognizer canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-  CGFloat offset = [scrollView contentOffset].y;
-  
-  if (offset < 0)
-  {
-    id newCategory = [[CatalogueStore sharedCatalogue] createCategory];
-    [newCategory setName:@"New Category"];
-    
-    [[self tableView] insertRowAtIndex:1 withRowAnimation:UITableViewRowAnimationFade];
-  }
-  else if (offset < [self addCategoryOffsetThreshold])
-  {
-    [self scrollToDefaultPosition];
-  }
+  return YES;
 }
 
-#warning FIX THIS: Only need assignment during sign switch for offset
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer willBeginRowMoveAtIndexPath:(NSIndexPath *)indexPath;
 {
-  CGFloat offset = [scrollView contentOffset].y;
-  
-  if (offset < 0)
-  {
-    [[addCategoryRow textLabel] setText:@"Release to add category"];
-  }
-  else
-  {
-    [[addCategoryRow textLabel] setText:@"Pull to add category"];
-  }
+  id cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+  [cell setBackgroundColor:[UIColor lightGrayColor]];
+  return;
+}
+
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer moveRowFromIndexPath:(NSIndexPath *)from toIndexPath:(NSIndexPath *)to;
+{
+  return;
+}
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer didFinishRowMoveAtIndexPath:(NSIndexPath *)indexPath;
+{
+  return;
 }
 @end
