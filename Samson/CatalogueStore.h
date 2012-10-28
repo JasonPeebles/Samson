@@ -25,9 +25,8 @@
 
 - (void)loadAllCategories;
 - (NSMutableArray *)exercisesForCategory:(Category *)category;
-- (void)moveCategoryAtIndex:(int)from toIndex:(int)to;
-- (void)moveExerciseForCategory:(Category *)category AtIndex:(int)from toIndex:(int)to;
-- (void)moveExerciseForCategory:(Category *)category atIndex:(int)from toCategoryAtIndex:(int)to;
+- (void)moveCategory:(Category *)category toIndex:(int)destination;
+- (void)moveExercise:(Exercise *)exercise toCategory:(Category *)destinationCategory andIndex:(int)destinationIndex;
 - (NSString *)catalogueArchivePath;
 //Commits the current changes in the context to persistent store
 - (BOOL)saveChanges;

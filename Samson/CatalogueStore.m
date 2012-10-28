@@ -14,10 +14,10 @@
 @interface CatalogueStore ()
 
 - (void)loadDefaultStoreData;
-
+- (void)moveExercise:(Exercise *)exercise withinCategoryToIndex:(int)destination;
 @end
 
-double newSortValue(NSArray* sortValues, int index)
+double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
 {
   double sortValue = 0;
   
@@ -25,19 +25,30 @@ double newSortValue(NSArray* sortValues, int index)
   {
     sortValue = 1.0;
   }
-  else if (index == 0)
+  else if (destination == 0)
   {
     sortValue = [sortValues[0] doubleValue] - 1.0;
   }
-  else if (index >= [sortValues count] - 1)
+  else if (destination >= [sortValues count] - 1)
   {
     sortValue = [[sortValues lastObject] doubleValue] + 1.0;
   }
   else
   {
-    double previous = [sortValues[index - 1] doubleValue];
-    double next = [sortValues[index] doubleValue];
+    double previous;
+    double next;
     
+    if (displaceDown)
+    {
+      previous = [sortValues[destination - 1] doubleValue];
+      next = [sortValues[destination] doubleValue];
+    }
+    else
+    {
+      previous = [sortValues[destination] doubleValue];
+      next = [sortValues[destination + 1] doubleValue];
+    }
+
     sortValue = (previous + next)/2.0;
   }
   
@@ -188,46 +199,43 @@ double newSortValue(NSArray* sortValues, int index)
 }
 
 
-- (void)moveCategoryAtIndex:(int)from toIndex:(int)to;
+- (void)moveCategory:(Category *)category toIndex:(int)destination;
 {
-  if (from == to)
+  int categoryIndex = [[self allCategories] indexOfObject:category];
+  if (categoryIndex == destination)
   {
     return;
   }
-  
-  Category *category = [[self allCategories] objectAtIndex:from];
-  [[self allCategories] removeObjectAtIndex:from];
-  
-  [category setSortValue:@(newSortValue([[self allCategories] valueForKey:@"sortValue"], to))];
-  [[self allCategories] insertObject:category atIndex:to];
+    
+  [category setSortValue:@(newSortValue([[self allCategories] valueForKey:@"sortValue"], destination, categoryIndex > destination))];
+  [[self allCategories] removeObject:category];
+  [[self allCategories] insertObject:category atIndex:destination];
 }
 
-- (void)moveExerciseForCategory:(Category *)category AtIndex:(int)from toIndex:(int)to;
+- (void)moveExercise:(Exercise *)exercise withinCategoryToIndex:(int)destination;
 {
-  if (from == to)
+  NSMutableArray *exercises = [self exercisesForCategory:[exercise category]];
+  int exerciseIndex = [exercises indexOfObject:exercise];
+  if (exerciseIndex == destination)
   {
     return;
   }
-  
-  NSMutableArray *exercises = [self exercisesForCategory:category];
-  Exercise *exercise = [exercises objectAtIndex:from];
-  [exercises removeObjectAtIndex:from];
-  [exercise setSortValue:@(newSortValue([exercises valueForKey:@"sortValue"], to))];
+  [exercise setSortValue:@(newSortValue([exercises valueForKey:@"sortValue"], destination, exerciseIndex > destination))];
+  [exercises removeObject:exercise];
+  [exercises insertObject:exercise atIndex:destination];
 }
 
-- (void)moveExerciseForCategory:(Category *)category atIndex:(int)from toCategoryAtIndex:(int)to;
+- (void)moveExercise:(Exercise *)exercise toCategory:(Category *)destinationCategory andIndex:(int)destinationIndex;
 {
-  Category *newCategory = [self allCategories][to];
-  
-  if ([category isEqual:newCategory])
+  if ([destinationCategory isEqual:[exercise category]])
   {
+    [self moveExercise:exercise withinCategoryToIndex:destinationIndex];
     return;
   }
   
-  Exercise *exercise = [self exercisesForCategory:category][from];
-  id newExercises = [self exercisesForCategory:newCategory];
-  [exercise setSortValue:@(newSortValue([newExercises valueForKey:@"sortValue"], [newExercises count]))];
-  [exercise setCategory:newCategory];
+  id newExercises = [self exercisesForCategory:destinationCategory];
+  [exercise setSortValue:@(newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex, NO))];
+  [exercise setCategory:destinationCategory];
 }
 
 - (NSString *)catalogueArchivePath;
@@ -255,7 +263,7 @@ double newSortValue(NSArray* sortValues, int index)
 
 - (Category *)createCategoryAtIndex:(int)index;
 {
-  double sortValue = newSortValue([[self allCategories] valueForKey:@"sortValue"], index);
+  double sortValue = newSortValue([[self allCategories] valueForKey:@"sortValue"], index, YES);
     
   Category *cat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
   
@@ -274,7 +282,7 @@ double newSortValue(NSArray* sortValues, int index)
 - (Exercise *)createExerciseForCategory:(Category *)category atIndex:(int)index;
 {
   id exercises = [self exercisesForCategory:category];
-  double sortValue = newSortValue([exercises valueForKey:@"sortValue"], index);
+  double sortValue = newSortValue([exercises valueForKey:@"sortValue"], index, YES);
   
   Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
   [exercise setSortValue:@(sortValue)];

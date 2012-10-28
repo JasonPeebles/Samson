@@ -12,7 +12,6 @@
 @interface CatalogueViewController : UITableViewController <UIActionSheetDelegate, TableViewGestureRowMoveDelegate>
 {
   NSIndexPath *indexPathMarkedForDeletion;
-  UITableViewCell *addCategoryRow;
 }
 
 - (void)markIndexPathForDeletion:(NSIndexPath *)indexPath;

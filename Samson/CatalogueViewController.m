@@ -15,13 +15,14 @@
 
 @interface CatalogueViewController ()
 
-@property(strong)Category *highlightedCategory;
+@property(nonatomic, strong)Category *highlightedCategory;
 @property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
+@property(nonatomic, assign)id grabbedObject;
+@property(nonatomic, assign)BOOL highlightCategoryOnDrop;
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 - (int)rowIndexOfObject:(id)obj;
 - (BOOL)objectIsExercise:(id)obj;
-- (CGFloat)addCategoryOffsetThreshold;
 
 @end
 
@@ -48,6 +49,41 @@ typedef enum
   return self;
 }
 
+- (void)setHighlightedCategory:(Category *)highlightedCategory
+{
+  CatalogueStore *cs = [CatalogueStore sharedCatalogue];
+  NSArray *allCategories = [cs allCategories];
+  
+  id oldSelectedCategory = [self highlightedCategory];
+  
+  [[self tableView] beginUpdates];
+  
+  if (oldSelectedCategory)
+  {
+    int oldSelectedCategoryIndex = [allCategories indexOfObject:oldSelectedCategory];
+    
+    NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[oldSelectedCategory exercises] count]);
+    
+    _highlightedCategory = nil;
+    
+    [[self tableView] deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
+  }
+  
+  if (highlightedCategory != oldSelectedCategory)
+  {
+    _highlightedCategory = highlightedCategory;
+    
+    int newSelectedCategoryIndex = [allCategories indexOfObject:highlightedCategory];
+    
+    NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[highlightedCategory exercises] count]);
+    
+    [[self tableView] insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
+  }
+  
+  [[self tableView] endUpdates];
+
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
   return [self init];
@@ -68,11 +104,6 @@ typedef enum
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
-}
-
-- (CGFloat)addCategoryOffsetThreshold;
-{
-  return [[self tableView] rowHeight];
 }
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
@@ -166,20 +197,20 @@ typedef enum
   
   BOOL isExercise = [self objectIsExercise:obj];
   
-    NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell)
-    {
-      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [[cell textLabel] setText:[obj description]];
+  NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
+  
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+  
+  if (!cell)
+  {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+  }
+  
+  [[cell textLabel] setText:[obj description]];
   [[cell textLabel] setTextColor:isExercise ? [UIColor blueColor] : [UIColor blackColor]];
     // Configure the cell...
     
-    return cell;
+  return cell;
 }
 
 /*
@@ -264,36 +295,7 @@ typedef enum
   //Otherwise, this is a category
   else
   {
-    CatalogueStore *cs = [CatalogueStore sharedCatalogue];
-    NSArray *allCategories = [cs allCategories];
-    
-    id oldSelectedCategory = [self highlightedCategory];
-    
-    [tableView beginUpdates];
-    
-    if (oldSelectedCategory)
-    {
-      int oldSelectedCategoryIndex = [allCategories indexOfObject:oldSelectedCategory];
-      
-      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[oldSelectedCategory exercises] count]);
-      
-      [self setHighlightedCategory:nil];
-      
-      [tableView deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-    if (obj != oldSelectedCategory)
-    {
-      [self setHighlightedCategory:obj];
-      
-      int newSelectedCategoryIndex = [allCategories indexOfObject:obj];
-      
-      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[obj exercises] count]);
-      
-      [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-    [tableView endUpdates];
+    [self setHighlightedCategory:obj];
   }
 }
 
@@ -337,17 +339,114 @@ typedef enum
 
 - (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer willBeginRowMoveAtIndexPath:(NSIndexPath *)indexPath;
 {
-  id cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-  [cell setBackgroundColor:[UIColor lightGrayColor]];
-  return;
+  //If moving the highlightedCategory, collapse it first
+  [self setGrabbedObject:[self objectAtRowIndex:[indexPath row]]];
+  
+  if ([self grabbedObject] == [self highlightedCategory])
+  {
+    [self setHighlightCategoryOnDrop:YES];
+    [self setHighlightedCategory:nil];
+  }
+  else
+  {
+    [self setHighlightCategoryOnDrop:NO];
+  }
 }
 
 - (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer moveRowFromIndexPath:(NSIndexPath *)from toIndexPath:(NSIndexPath *)to;
 {
-  return;
+  if ([from isEqual:to])
+  {
+    return;
+  }
+  
+  BOOL movingDown = [from row] < [to row];
+  BOOL objIsExercise = [self objectIsExercise:[self grabbedObject]];
+  
+  CatalogueStore *store = [CatalogueStore sharedCatalogue];
+  
+  if (objIsExercise)
+  {
+    //Get the closest category above or at the to row
+    int categoryScanIndex = [to row];
+    id nearestCategory = nil;
+    while (categoryScanIndex >= 0)
+    {
+      id obj = [self objectAtRowIndex:categoryScanIndex];
+      if (![self objectIsExercise:obj])
+      {
+        nearestCategory = obj;
+        break;
+      }
+      categoryScanIndex--;
+    }
+
+    BOOL categoryWillChange = ![[[self grabbedObject] category] isEqual:nearestCategory];
+
+    int destination;
+
+    if (categoryWillChange)
+    {
+      destination = [[nearestCategory exercises] count];
+      
+      if ([nearestCategory isEqual:[self highlightedCategory]] && movingDown)
+      {
+        destination = 0;
+      }
+    }
+    else
+    {
+      destination = [to row] - ([[store allCategories] indexOfObject:nearestCategory] + 1);
+    }
+
+    [store moveExercise:[self grabbedObject] toCategory:nearestCategory andIndex:destination];
+  }
+  else
+  {
+    int destination = [to row] - [[[self highlightedCategory] exercises] count];
+    [store moveCategory:[self grabbedObject] toIndex:destination];
+  }
 }
+
 - (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer didFinishRowMoveAtIndexPath:(NSIndexPath *)indexPath;
 {
-  return;
+  if ([self highlightCategoryOnDrop])
+  {
+    [self setHighlightedCategory:[self grabbedObject]];
+  }
+  
+  [self setGrabbedObject:nil];
 }
+
+- (NSIndexPath *)gestureRecognizer:(TableViewGestureRecognizer *)recognizer targetIndexPathForRowMoveFromIndexPath:(NSIndexPath *)from toProposedIndexPath:(NSIndexPath *)proposed
+{
+  BOOL objIsExercise = [self objectIsExercise:[self grabbedObject]];
+  
+  //If moving an Exercise, permit any proposed indexPath except row 0, which gets redirected to row 1
+  if (objIsExercise && [proposed row] == 0)
+  {
+    return [NSIndexPath indexPathForRow:1];
+  }
+  //If moving a Category, forbid moves to within Exercise sublist
+  else if (!objIsExercise && [[[self highlightedCategory] exercises] count] > 0)
+  {
+    int forbiddenMinRow = [[[CatalogueStore sharedCatalogue] allCategories] indexOfObject:[self highlightedCategory]];
+    int forbiddenMaxRow = forbiddenMinRow + [[[self highlightedCategory] exercises] count];
+  
+    //If we're moving the row up, we can move the row to where the highlighted category sits, as it will push the whole category-exercises group down
+    //Otherwise
+    if ([from row] > [proposed row])
+    {
+      forbiddenMinRow++;
+    }
+    
+    if (forbiddenMinRow <= [proposed row] && [proposed row] <= forbiddenMaxRow)
+    {
+      return from;
+    }
+  }
+  
+  return proposed;
+}
+
 @end
