@@ -13,8 +13,10 @@
 
 @interface CatalogueStore ()
 
+- (NSString *)catalogueArchivePath;
 - (void)loadDefaultStoreData;
 - (void)moveExercise:(Exercise *)exercise withinCategoryToIndex:(int)destination;
+
 @end
 
 double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
@@ -35,20 +37,12 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   }
   else
   {
-    double previous;
-    double next;
+    int previousIndex = destination - (int)displaceDown;
+    int nextIndex = destination + (int)(!displaceDown);
     
-    if (displaceDown)
-    {
-      previous = [sortValues[destination - 1] doubleValue];
-      next = [sortValues[destination] doubleValue];
-    }
-    else
-    {
-      previous = [sortValues[destination] doubleValue];
-      next = [sortValues[destination + 1] doubleValue];
-    }
-
+    double previous = [sortValues[previousIndex] doubleValue];
+    double next = [sortValues[nextIndex] doubleValue];
+    
     sortValue = (previous + next)/2.0;
   }
   

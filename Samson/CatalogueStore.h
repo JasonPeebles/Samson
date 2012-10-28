@@ -27,7 +27,6 @@
 - (NSMutableArray *)exercisesForCategory:(Category *)category;
 - (void)moveCategory:(Category *)category toIndex:(int)destination;
 - (void)moveExercise:(Exercise *)exercise toCategory:(Category *)destinationCategory andIndex:(int)destinationIndex;
-- (NSString *)catalogueArchivePath;
 //Commits the current changes in the context to persistent store
 - (BOOL)saveChanges;
 //Creates a new category.  The index is used to determine the sortValue relative to the exisiting categories
