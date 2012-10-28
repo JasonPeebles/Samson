@@ -403,7 +403,16 @@ typedef enum
   }
   else
   {
-    int destination = [to row] - [[[self highlightedCategory] exercises] count];
+    int destination = [to row];
+    
+    if ([self highlightedCategory])
+    {
+      if (destination > [[store allCategories] indexOfObject:[self highlightedCategory]])
+      {
+        destination -= [[[self highlightedCategory] exercises] count];
+      }
+    }
+    
     [store moveCategory:[self grabbedObject] toIndex:destination];
   }
 }
@@ -430,14 +439,16 @@ typedef enum
   //If moving a Category, forbid moves to within Exercise sublist
   else if (!objIsExercise && [[[self highlightedCategory] exercises] count] > 0)
   {
+    
     int forbiddenMinRow = [[[CatalogueStore sharedCatalogue] allCategories] indexOfObject:[self highlightedCategory]];
-    int forbiddenMaxRow = forbiddenMinRow + [[[self highlightedCategory] exercises] count];
+    int forbiddenMaxRow = forbiddenMinRow + [[[self highlightedCategory] exercises] count] - 1;
   
     //If we're moving the row up, we can move the row to where the highlighted category sits, as it will push the whole category-exercises group down
     //Otherwise
     if ([from row] > [proposed row])
     {
       forbiddenMinRow++;
+      forbiddenMaxRow++;
     }
     
     if (forbiddenMinRow <= [proposed row] && [proposed row] <= forbiddenMaxRow)
