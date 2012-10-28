@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+    <entity name="Category" representedClassName="Category" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Exercise" inverseName="category" inverseEntity="Exercise" syncable="YES"/>
+    </entity>
+    <entity name="Exercise" representedClassName="Exercise" syncable="YES">
+        <attribute name="measurementFlags" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="exercises" inverseEntity="Category" syncable="YES"/>
+        <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Workout" inverseName="exercise" inverseEntity="Workout" syncable="YES"/>
+    </entity>
+    <entity name="Workout" representedClassName="Workout" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="kilos" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="repetitions" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" attributeType="Date" syncable="YES"/>
+        <relationship name="exercise" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="workouts" inverseEntity="Exercise" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Category" positionX="-425" positionY="-277" width="128" height="88"/>
+        <element name="Exercise" positionX="-198" positionY="-162" width="128" height="118"/>
+        <element name="Workout" positionX="90" positionY="-36" width="128" height="118"/>
+    </elements>
 </model>
