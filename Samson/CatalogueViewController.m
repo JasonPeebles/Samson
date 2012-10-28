@@ -8,12 +8,14 @@
 
 #import "CatalogueViewController.h"
 #import "CatalogueStore.h"
-#import "AbstractExercise.h"
+#import "Category.h"
+#import "Exercise.h"
 #import "NSIndexPath+SingleSectionAdditions.h"
 #import "UITableView+SingleSectionsAdditions.h"
 
 @interface CatalogueViewController ()
 
+@property(strong)Category *highlightedCategory;
 @property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
@@ -76,35 +78,35 @@ typedef enum
 - (NSManagedObject *)objectAtRowIndex:(int)index;
 {  
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
-  id selectedCategory = [cs selectedCategory];
+  NSArray *allCategories = [cs allCategories];
   
-  if (!selectedCategory)
+  if (![self highlightedCategory])
   {
-    return [[cs allCategories] objectAtIndex:index];
+    return allCategories[index];
   }
   
-  int indexOfSelectedCategory = [[cs allCategories] indexOfObject:selectedCategory];
-  int exercisesCount = [[cs exercisesForSelectedCategory] count];
+  int indexOfHighlightedCategory = [allCategories indexOfObject:[self highlightedCategory]];
+  int exercisesCount = [[[self highlightedCategory] exercises] count];
   
-  if (index <= indexOfSelectedCategory)
+  if (index <= indexOfHighlightedCategory)
   {
-    return [[cs allCategories] objectAtIndex:index];
+    return allCategories[index];
   }
-  else if (index <= indexOfSelectedCategory + exercisesCount)
+  else if (index <= indexOfHighlightedCategory + exercisesCount)
   {
-    int exerciseIndex = index - indexOfSelectedCategory - 1;
-    return [[cs exercisesForSelectedCategory] objectAtIndex:exerciseIndex];
+    int exerciseIndex = index - indexOfHighlightedCategory - 1;
+    return [cs exercisesForCategory:[self highlightedCategory]][exerciseIndex];
   }
   else
   {
     int categoryIndex = index - exercisesCount;
-    return [[cs allCategories] objectAtIndex:categoryIndex];
+    return allCategories[categoryIndex];
   }
 }
 
 - (BOOL)objectIsExercise:(id)obj;
 {
-  return [obj isKindOfClass:[AbstractExercise class]];
+  return [obj isKindOfClass:[Exercise class]];
 }
 
 - (void)markIndexPathForDeletion:(NSIndexPath *)indexPath;
@@ -155,7 +157,7 @@ typedef enum
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
   //Pull-To-Add-Category Row + Categories + Displayed Exercises
-  return [[cs allCategories] count] + [[cs exercisesForSelectedCategory] count];
+  return [[cs allCategories] count] + [[[self highlightedCategory] exercises] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -256,35 +258,37 @@ typedef enum
   
   if (isExercise)
   {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     return;
   }
   //Otherwise, this is a category
   else
   {
     CatalogueStore *cs = [CatalogueStore sharedCatalogue];
+    NSArray *allCategories = [cs allCategories];
     
-    id oldSelectedCategory = [cs selectedCategory];
+    id oldSelectedCategory = [self highlightedCategory];
     
     [tableView beginUpdates];
     
     if (oldSelectedCategory)
     {
-      int oldSelectedCategoryIndex = [[cs allCategories] indexOfObject:oldSelectedCategory];
+      int oldSelectedCategoryIndex = [allCategories indexOfObject:oldSelectedCategory];
       
-      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToDelete = NSMakeRange(oldSelectedCategoryIndex + 1, [[oldSelectedCategory exercises] count]);
       
-      [cs setSelectedCategory:nil];
+      [self setHighlightedCategory:nil];
       
       [tableView deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
     }
     
     if (obj != oldSelectedCategory)
     {
-      [cs setSelectedCategory:obj];
+      [self setHighlightedCategory:obj];
       
-      int newSelectedCategoryIndex = [[cs allCategories] indexOfObject:obj];
+      int newSelectedCategoryIndex = [allCategories indexOfObject:obj];
       
-      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[cs exercisesForSelectedCategory] count]);
+      NSRange indexRangeToInsert = NSMakeRange(newSelectedCategoryIndex + 1, [[obj exercises] count]);
       
       [tableView insertRowsInIndexRange:indexRangeToInsert withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -316,7 +320,7 @@ typedef enum
     id categoryToDelete = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
     id cs = [CatalogueStore sharedCatalogue];
     
-    int exercisesCount = (categoryToDelete == [cs selectedCategory]) ? [[cs exercisesForSelectedCategory] count] : 0;
+    int exercisesCount = (categoryToDelete == [self highlightedCategory]) ? [[[self highlightedCategory] exercises] count] : 0;
     
     NSRange indexRangeToDelete = NSMakeRange([indexPathMarkedForDeletion row], exercisesCount + 1);
     [cs deleteCategory:categoryToDelete];

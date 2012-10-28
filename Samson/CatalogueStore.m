@@ -8,23 +8,43 @@
 
 #import "CatalogueStore.h"
 #import "Category.h"
-#import "AbstractExercise.h"
-#import "AbstractExercise+Custom.h"
-#import "WeightExercise.h"
-#import "DurationExercise.h"
+#import "Exercise.h"
 #import "UIActionSheet+Additions.h"
 
 @interface CatalogueStore ()
 
 - (void)loadDefaultStoreData;
-//Returns a category's exercises ordered by the sortOrder attribute
-- (NSMutableArray *)exercisesForCategory:(Category *)category;
+
 @end
 
-@implementation CatalogueStore
+double newSortValue(NSArray* sortValues, int index)
+{
+  double sortValue = 0;
+  
+  if ([sortValues count] == 0)
+  {
+    sortValue = 1.0;
+  }
+  else if (index == 0)
+  {
+    sortValue = [sortValues[0] doubleValue] - 1.0;
+  }
+  else if (index >= [sortValues count] - 1)
+  {
+    sortValue = [[sortValues lastObject] doubleValue] + 1.0;
+  }
+  else
+  {
+    double previous = [sortValues[index - 1] doubleValue];
+    double next = [sortValues[index] doubleValue];
+    
+    sortValue = (previous + next)/2.0;
+  }
+  
+  return sortValue;
+}
 
-@synthesize allCategories = _allCategories;
-@synthesize exercisesForSelectedCategory = _exercisesForSelectedCategory;
+@implementation CatalogueStore
 
 + (CatalogueStore *)sharedCatalogue;
 {
@@ -83,12 +103,6 @@
   return self;
 }
 
-- (void)setSelectedCategory:(Category *)selectedCategory
-{
-  _selectedCategory = selectedCategory;
-  
-  [self loadAllExercisesForSelectedCategory];
-}
 
 /*Reads in a predefined plist of the form:
  <Root>
@@ -117,22 +131,18 @@
     Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
     
     [category setName:key];
-    [category setSortOrder:idx];
+    [category setSortValue:@(idx)];
     
     [_allCategories addObject:category];
     
     NSArray *exercises = [dictionary valueForKey:key];
     
-    [exercises enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-      BOOL usesWeights = [[obj valueForKey:@"usesWeights"] boolValue];
-      
-      NSString *entityName = [AbstractExercise concreteEntityNameUsingWeights:usesWeights];
-      
-      AbstractExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:context];
+    [exercises enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {            
+      Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
       
       [exercise setName:[obj valueForKey:@"name"]];
       [exercise setCategory:category];
-      [exercise setSortOrder:idx];
+      [exercise setSortValue:@(idx)];
     }];
     
   }];
@@ -148,7 +158,7 @@
     
     [fetchRequest setEntity:entityDescription];
     
-    id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+    id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortValue" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     NSError *error;
@@ -172,36 +182,52 @@
 
 - (NSMutableArray *)exercisesForCategory:(Category *)category;
 {
-  id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+  id sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortValue" ascending:YES];
   
   return [[[category exercises] sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
 }
 
-- (void)loadAllExercisesForSelectedCategory;
-{
-  _exercisesForSelectedCategory = nil;
-  
-  if (!_selectedCategory)
-  {
-    return;
-  }
-    
-  _exercisesForSelectedCategory = [self exercisesForCategory:_selectedCategory];
-}
 
 - (void)moveCategoryAtIndex:(int)from toIndex:(int)to;
 {
+  if (from == to)
+  {
+    return;
+  }
   
+  Category *category = [[self allCategories] objectAtIndex:from];
+  [[self allCategories] removeObjectAtIndex:from];
+  
+  [category setSortValue:@(newSortValue([[self allCategories] valueForKey:@"sortValue"], to))];
+  [[self allCategories] insertObject:category atIndex:to];
 }
 
-- (void)moveExerciseAtIndex:(int)from toIndex:(int)to;
+- (void)moveExerciseForCategory:(Category *)category AtIndex:(int)from toIndex:(int)to;
 {
+  if (from == to)
+  {
+    return;
+  }
   
+  NSMutableArray *exercises = [self exercisesForCategory:category];
+  Exercise *exercise = [exercises objectAtIndex:from];
+  [exercises removeObjectAtIndex:from];
+  [exercise setSortValue:@(newSortValue([exercises valueForKey:@"sortValue"], to))];
 }
 
-- (void)moveExerciseAtIndex:(int)from toCategoryAtIndex:(int)to;
+- (void)moveExerciseForCategory:(Category *)category atIndex:(int)from toCategoryAtIndex:(int)to;
 {
+  Category *newCategory = [self allCategories][to];
   
+  if ([category isEqual:newCategory])
+  {
+    return;
+  }
+  
+  Exercise *exercise = [self exercisesForCategory:category][from];
+  id newExercises = [self exercisesForCategory:newCategory];
+  [exercise setSortValue:@(newSortValue([newExercises valueForKey:@"sortValue"], [newExercises count]))];
+  [exercise setCategory:newCategory];
 }
 
 - (NSString *)catalogueArchivePath;
@@ -226,67 +252,40 @@
   return successful;
 }
 
-- (Category *)createCategory;
+
+- (Category *)createCategoryAtIndex:(int)index;
 {
-  double sortOrder;
-  
-  if ([_allCategories count] == 0)
-  {
-    sortOrder = 1.0;
-  }
-  else
-  {
-    sortOrder = [[_allCategories objectAtIndex:0] sortOrder] - 1.0;
-  }
-  
+  double sortValue = newSortValue([[self allCategories] valueForKey:@"sortValue"], index);
+    
   Category *cat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
   
-  [cat setSortOrder:sortOrder];
-  [_allCategories insertObject:cat atIndex:0];
+  [cat setSortValue:@(sortValue)];
+  [_allCategories insertObject:cat atIndex:index];
   
   return cat;
 }
 
 - (void)deleteCategory:(Category *)toDelete
 {
-  if (toDelete == _selectedCategory)
-  {
-    [self setSelectedCategory:nil];
-  }
-  
   [context deleteObject:toDelete];
   [_allCategories removeObjectIdenticalTo:toDelete];
 }
 
-- (AbstractExercise *)createExerciseUsingWeights:(BOOL)usesWeights;
+- (Exercise *)createExerciseForCategory:(Category *)category atIndex:(int)index;
 {
-  double sortOrder;
+  id exercises = [self exercisesForCategory:category];
+  double sortValue = newSortValue([exercises valueForKey:@"sortValue"], index);
   
-  if ([_exercisesForSelectedCategory count] == 0)
-  {
-    sortOrder = 1.0;
-  }
-  else
-  {
-    sortOrder = [[_exercisesForSelectedCategory objectAtIndex:0] sortOrder] - 1.0;
-  }
-  
-  NSString *entityName = [AbstractExercise concreteEntityNameUsingWeights:usesWeights];
-  
-  AbstractExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:context];
-  
-  [exercise setSortOrder:sortOrder];
-  [exercise setCategory:_selectedCategory];
-  
-  [_exercisesForSelectedCategory insertObject:exercise atIndex:0];
+  Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
+  [exercise setSortValue:@(sortValue)];
+  [exercise setCategory:category];
   
   return exercise;
 }
 
-- (void)deleteExercise:(AbstractExercise *)exercise
+- (void)deleteExercise:(Exercise *)exercise;
 {
   [context deleteObject:exercise];
-  [_exercisesForSelectedCategory removeObjectIdenticalTo:exercise];
 }
 
 @end

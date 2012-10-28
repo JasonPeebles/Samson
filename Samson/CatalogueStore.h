@@ -11,7 +11,7 @@
 #import <CoreData/CoreData.h>
 
 @class Category;
-@class AbstractExercise;
+@class Exercise;
 
 @interface CatalogueStore : NSObject
 {
@@ -19,25 +19,23 @@
   NSManagedObjectModel *model;
 }
 
-@property(nonatomic, weak) Category *selectedCategory;
 @property(readonly, nonatomic, strong) NSMutableArray *allCategories;
-@property(readonly, nonatomic, strong) NSMutableArray *exercisesForSelectedCategory;
 
 + (CatalogueStore *)sharedCatalogue;
 
 - (void)loadAllCategories;
-- (void)loadAllExercisesForSelectedCategory;
+- (NSMutableArray *)exercisesForCategory:(Category *)category;
 - (void)moveCategoryAtIndex:(int)from toIndex:(int)to;
-- (void)moveExerciseAtIndex:(int)from toIndex:(int)to;
-- (void)moveExerciseAtIndex:(int)from toCategoryAtIndex:(int)to;
+- (void)moveExerciseForCategory:(Category *)category AtIndex:(int)from toIndex:(int)to;
+- (void)moveExerciseForCategory:(Category *)category atIndex:(int)from toCategoryAtIndex:(int)to;
 - (NSString *)catalogueArchivePath;
 //Commits the current changes in the context to persistent store
 - (BOOL)saveChanges;
-- (Category *)createCategory;
+//Creates a new category.  The index is used to determine the sortValue relative to the exisiting categories
+- (Category *)createCategoryAtIndex:(int)index;
 - (void)deleteCategory:(Category *)toDelete;
-//Creates either a WeightExercise (usesWeights == YES) or a DurationExercise (usesWeights == NO) concrete instance
-//for the selected Category
-- (AbstractExercise *)createExerciseUsingWeights:(BOOL)usesWeights;
-- (void)deleteExercise:(AbstractExercise *)exercise;
+//Creates a new Exercise for the category.  The index is used to determine the sortValue relative to existing exercises
+- (Exercise *)createExerciseForCategory:(Category *)category atIndex:(int)index;
+- (void)deleteExercise:(Exercise *)exercise;
 
 @end
