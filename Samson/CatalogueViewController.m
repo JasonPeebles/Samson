@@ -18,6 +18,7 @@
 @property(nonatomic, strong)Category *highlightedCategory;
 @property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
 @property(nonatomic, assign)id grabbedObject;
+@property(nonatomic, strong)NSIndexPath *grabbedObjectIndexPath;
 @property(nonatomic, assign)BOOL highlightCategoryOnDrop;
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
@@ -187,12 +188,35 @@ typedef enum
 {
   CatalogueStore *cs = [CatalogueStore sharedCatalogue];
   
-  //Pull-To-Add-Category Row + Categories + Displayed Exercises
-  return [[cs allCategories] count] + [[[self highlightedCategory] exercises] count];
+  //Categories + Displayed Exercises
+  int numberOfRows = [[cs allCategories] count] + [[[self highlightedCategory] exercises] count];
+  
+  //If we're moving an exercise outside of the highlighted category, we need one more row to capture this
+  if ([self objectIsExercise:[self grabbedObject]] && ![[[self grabbedObject] category] isEqual:[self highlightedCategory]])
+  {
+    numberOfRows++;
+  }
+  
+  return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([[self grabbedObjectIndexPath] isEqual:indexPath])
+  {
+    NSString *CellIdentifier = @"Placeholder";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell)
+    {
+      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    [[cell contentView] setBackgroundColor:[UIColor blackColor]];
+
+    return cell;
+  }
   id obj = [self objectAtRowIndex:[indexPath row]];
   
   BOOL isExercise = [self objectIsExercise:obj];
@@ -341,6 +365,7 @@ typedef enum
 {
   //If moving the highlightedCategory, collapse it first
   [self setGrabbedObject:[self objectAtRowIndex:[indexPath row]]];
+  [self setGrabbedObjectIndexPath:indexPath];
   
   if ([self grabbedObject] == [self highlightedCategory])
   {
@@ -359,27 +384,21 @@ typedef enum
   {
     return;
   }
-  
-  BOOL movingDown = [from row] < [to row];
+
   BOOL objIsExercise = [self objectIsExercise:[self grabbedObject]];
   
   CatalogueStore *store = [CatalogueStore sharedCatalogue];
   
   if (objIsExercise)
   {
-    //Get the closest category above or at the to row
-    int categoryScanIndex = [to row];
-    id nearestCategory = nil;
-    while (categoryScanIndex >= 0)
-    {
-      id obj = [self objectAtRowIndex:categoryScanIndex];
-      if (![self objectIsExercise:obj])
-      {
-        nearestCategory = obj;
-        break;
-      }
-      categoryScanIndex--;
-    }
+    //Get the closest category to the to row
+    BOOL movingDown = [from row] < [to row];
+    //If we're moving down, examine the target row, otherwise, examine the row above the target row
+    //This index will always be non-negative since we're forbidding exercise moves to row 0
+    int categoryScanIndex = [to row] - (int)!movingDown;
+    id obj = [self objectAtRowIndex:categoryScanIndex];
+    
+    id nearestCategory = [self objectIsExercise:obj] ? [obj category] : obj;
 
     BOOL categoryWillChange = ![[[self grabbedObject] category] isEqual:nearestCategory];
 
@@ -387,11 +406,13 @@ typedef enum
 
     if (categoryWillChange)
     {
-      destination = [[nearestCategory exercises] count];
-      
       if ([nearestCategory isEqual:[self highlightedCategory]] && movingDown)
       {
         destination = 0;
+      }
+      else
+      {
+        destination = [[nearestCategory exercises] count];
       }
     }
     else
@@ -415,6 +436,8 @@ typedef enum
     
     [store moveCategory:[self grabbedObject] toIndex:destination];
   }
+  
+  [self setGrabbedObjectIndexPath:to];
 }
 
 - (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer didFinishRowMoveAtIndexPath:(NSIndexPath *)indexPath;
@@ -422,9 +445,17 @@ typedef enum
   if ([self highlightCategoryOnDrop])
   {
     [self setHighlightedCategory:[self grabbedObject]];
+    [self setHighlightCategoryOnDrop:NO];
+  }
+  
+  //If we just finished dropping an exercise into a category that is not the highlighted category, need to delete the row
+  if ([self objectIsExercise:[self grabbedObject]] && ![[[self grabbedObject] category] isEqual:[self highlightedCategory]])
+  {
+    [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
   }
   
   [self setGrabbedObject:nil];
+  [self setGrabbedObjectIndexPath:nil];
 }
 
 - (NSIndexPath *)gestureRecognizer:(TableViewGestureRecognizer *)recognizer targetIndexPathForRowMoveFromIndexPath:(NSIndexPath *)from toProposedIndexPath:(NSIndexPath *)proposed

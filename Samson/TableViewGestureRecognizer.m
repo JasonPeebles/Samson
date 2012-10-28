@@ -210,14 +210,15 @@ typedef enum
     [UIView commitAnimations];
     
     [[self tableView] beginUpdates];
-    
-    [[self tableView] deleteRowsAtIndexPaths:@[indexPathAtGesture] withRowAnimation:UITableViewRowAnimationNone];
-    [[self tableView] insertRowsAtIndexPaths:@[indexPathAtGesture] withRowAnimation:UITableViewRowAnimationNone];
-    
     //Tell the delegate moving will begin
     [[self gestureDelegate] gestureRecognizer:self willBeginRowMoveAtIndexPath:indexPathAtGesture];
     [[self tableView] endUpdates];
     
+    id indexPath = [[self tableView] indexPathForRowAtPoint:gestureLocation];
+    if (indexPath)
+    {
+      [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
     //Begin listening for dragging image to edge of screen
     id timer = [NSTimer timerWithTimeInterval:1/4 target:self selector:@selector(scrollToCellMove) userInfo:nil repeats:YES];
     [self setCellMovementTimer:timer];
@@ -269,20 +270,21 @@ typedef enum
                        CGPoint cellRectOrigin = [tableView rectForRowAtIndexPath:blockMovingIndexPath].origin;
                        [snapshotImageView setTransform:CGAffineTransformIdentity];
                        [snapshotImageView setFrame:CGRectOffset([snapshotImageView bounds], cellRectOrigin.x, cellRectOrigin.y)];
-                     } completion:^(BOOL finished) {
-                       [snapshotImageView removeFromSuperview];
-                       
+                     } completion:^(BOOL finished) {                       
+                       //Give the gesture delegate a chance update things
                        [tableView beginUpdates];
-                       [tableView deleteRowsAtIndexPaths:@[blockMovingIndexPath]
-                                                    withRowAnimation:UITableViewRowAnimationNone];
-                       [tableView insertRowsAtIndexPaths:@[blockMovingIndexPath]
-                                                    withRowAnimation:UITableViewRowAnimationNone];
                        [[self gestureDelegate] gestureRecognizer:self didFinishRowMoveAtIndexPath:blockMovingIndexPath];
-                       
                        [tableView endUpdates];
+                       
+                       id indexPath = [[self tableView] indexPathForRowAtPoint:gestureLocation];
+                       if (indexPath)
+                       {
+                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                       }
                        
                        [self setMovingIndexPath:nil];
                        [self setGestureState:TableViewGestureStateNone];
+                       [snapshotImageView removeFromSuperview];
                      }];
     
   }
