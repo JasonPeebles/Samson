@@ -138,14 +138,15 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
     [category setName:key];
     [category setSortValue:categoryIndex];
     
-    [_allCategories addObject:category];
+    [[self allCategories] addObject:category];
     
     NSArray *exercises = [dictionary valueForKey:key];
     
     [exercises enumerateObjectsUsingBlock:^(id obj, NSUInteger exerciseIndex, BOOL *exerciseStop) {
       Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
       
-      [exercise setName:[obj valueForKey:@"name"]];
+      [exercise setValuesForKeysWithDictionary:obj];
+      
       [exercise setCategory:category];
       [exercise setSortValue:exerciseIndex];
     }];
