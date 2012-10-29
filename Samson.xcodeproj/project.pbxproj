@@ -16,10 +16,10 @@
 		770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562C15E1DFD800EF29F9 /* AppDelegate.m */; };
 		770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */; };
 		77440348163E20AF00EBA5DA /* Workout+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77440347163E20AF00EBA5DA /* Workout+Custom.m */; };
+		77440353163E2C1B00EBA5DA /* Exercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77440352163E2C1B00EBA5DA /* Exercise.m */; };
+		77440356163E2C3900EBA5DA /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 77440355163E2C3900EBA5DA /* Category.m */; };
+		77440359163E2C4E00EBA5DA /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77440358163E2C4E00EBA5DA /* Workout.m */; };
 		778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */; };
-		77B03DAB163C9C76006D76D9 /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DAA163C9C76006D76D9 /* Workout.m */; };
-		77B03DAE163C9C76006D76D9 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DAD163C9C76006D76D9 /* Category.m */; };
-		77B03DB1163C9C76006D76D9 /* Exercise.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DB0163C9C76006D76D9 /* Exercise.m */; };
 		77B03DB5163CB23F006D76D9 /* Category+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DB4163CB23F006D76D9 /* Category+Custom.m */; };
 		77B03DBA163CB293006D76D9 /* Exercise+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DB9163CB293006D76D9 /* Exercise+Custom.m */; };
 		77B3F06815E262E1001013FC /* CatalogueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3F06715E262E1001013FC /* CatalogueStore.m */; };
@@ -46,14 +46,14 @@
 		770D562F15E1DFD800EF29F9 /* Samson.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Samson.xcdatamodel; sourceTree = "<group>"; };
 		77440346163E20AF00EBA5DA /* Workout+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Workout+Custom.h"; sourceTree = "<group>"; };
 		77440347163E20AF00EBA5DA /* Workout+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Workout+Custom.m"; sourceTree = "<group>"; };
+		77440351163E2C1B00EBA5DA /* Exercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exercise.h; sourceTree = "<group>"; };
+		77440352163E2C1B00EBA5DA /* Exercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exercise.m; sourceTree = "<group>"; };
+		77440354163E2C3900EBA5DA /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		77440355163E2C3900EBA5DA /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		77440357163E2C4E00EBA5DA /* Workout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Workout.h; sourceTree = "<group>"; };
+		77440358163E2C4E00EBA5DA /* Workout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Workout.m; sourceTree = "<group>"; };
 		778F76AE15E33A5C0033DBD1 /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
 		778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
-		77B03DA9163C9C76006D76D9 /* Workout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Workout.h; sourceTree = "<group>"; };
-		77B03DAA163C9C76006D76D9 /* Workout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Workout.m; sourceTree = "<group>"; };
-		77B03DAC163C9C76006D76D9 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
-		77B03DAD163C9C76006D76D9 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
-		77B03DAF163C9C76006D76D9 /* Exercise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exercise.h; sourceTree = "<group>"; };
-		77B03DB0163C9C76006D76D9 /* Exercise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exercise.m; sourceTree = "<group>"; };
 		77B03DB3163CB23F006D76D9 /* Category+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Category+Custom.h"; sourceTree = "<group>"; };
 		77B03DB4163CB23F006D76D9 /* Category+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Category+Custom.m"; sourceTree = "<group>"; };
 		77B03DB8163CB293006D76D9 /* Exercise+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Exercise+Custom.h"; sourceTree = "<group>"; };
@@ -156,8 +156,8 @@
 		77440344163E209A00EBA5DA /* Workout */ = {
 			isa = PBXGroup;
 			children = (
-				77B03DA9163C9C76006D76D9 /* Workout.h */,
-				77B03DAA163C9C76006D76D9 /* Workout.m */,
+				77440357163E2C4E00EBA5DA /* Workout.h */,
+				77440358163E2C4E00EBA5DA /* Workout.m */,
 				77440346163E20AF00EBA5DA /* Workout+Custom.h */,
 				77440347163E20AF00EBA5DA /* Workout+Custom.m */,
 			);
@@ -167,8 +167,8 @@
 		77B03DB6163CB24F006D76D9 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				77B03DAC163C9C76006D76D9 /* Category.h */,
-				77B03DAD163C9C76006D76D9 /* Category.m */,
+				77440354163E2C3900EBA5DA /* Category.h */,
+				77440355163E2C3900EBA5DA /* Category.m */,
 				77B03DB3163CB23F006D76D9 /* Category+Custom.h */,
 				77B03DB4163CB23F006D76D9 /* Category+Custom.m */,
 			);
@@ -178,8 +178,8 @@
 		77B03DB7163CB27E006D76D9 /* Exercise */ = {
 			isa = PBXGroup;
 			children = (
-				77B03DAF163C9C76006D76D9 /* Exercise.h */,
-				77B03DB0163C9C76006D76D9 /* Exercise.m */,
+				77440351163E2C1B00EBA5DA /* Exercise.h */,
+				77440352163E2C1B00EBA5DA /* Exercise.m */,
 				77B03DB8163CB293006D76D9 /* Exercise+Custom.h */,
 				77B03DB9163CB293006D76D9 /* Exercise+Custom.m */,
 			);
@@ -308,12 +308,12 @@
 				77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */,
 				778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */,
 				77C1C89015EE4F75005601D1 /* TableViewGestureRecognizer.m in Sources */,
-				77B03DAB163C9C76006D76D9 /* Workout.m in Sources */,
-				77B03DAE163C9C76006D76D9 /* Category.m in Sources */,
-				77B03DB1163C9C76006D76D9 /* Exercise.m in Sources */,
 				77B03DB5163CB23F006D76D9 /* Category+Custom.m in Sources */,
 				77B03DBA163CB293006D76D9 /* Exercise+Custom.m in Sources */,
 				77440348163E20AF00EBA5DA /* Workout+Custom.m in Sources */,
+				77440353163E2C1B00EBA5DA /* Exercise.m in Sources */,
+				77440356163E2C3900EBA5DA /* Category.m in Sources */,
+				77440359163E2C4E00EBA5DA /* Workout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

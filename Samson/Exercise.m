@@ -2,7 +2,7 @@
 //  Exercise.m
 //  Samson
 //
-//  Created by Jason Peebles on 2012-10-27.
+//  Created by Jason Peebles on 2012-10-28.
 //  Copyright (c) 2012 Jason Peebles. All rights reserved.
 //
 
@@ -13,9 +13,11 @@
 
 @implementation Exercise
 
+@dynamic measurementFlags;
 @dynamic name;
 @dynamic sortValue;
-@dynamic measurementFlags;
+@dynamic maxKilograms;
+@dynamic maxRepetitions;
 @dynamic category;
 @dynamic workouts;
 

@@ -136,7 +136,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
     Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
     
     [category setName:key];
-    [category setSortValue:@(categoryIndex)];
+    [category setSortValue:categoryIndex];
     
     [_allCategories addObject:category];
     
@@ -147,7 +147,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
       
       [exercise setName:[obj valueForKey:@"name"]];
       [exercise setCategory:category];
-      [exercise setSortValue:@(exerciseIndex)];
+      [exercise setSortValue:exerciseIndex];
     }];
     
   }];
@@ -201,7 +201,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
     return;
   }
     
-  [category setSortValue:@(newSortValue([[self allCategories] valueForKey:@"sortValue"], destination, categoryIndex > destination))];
+  [category setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], destination, categoryIndex > destination)];
   [[self allCategories] removeObject:category];
   [[self allCategories] insertObject:category atIndex:destination];
 }
@@ -214,7 +214,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   {
     return;
   }
-  [exercise setSortValue:@(newSortValue([exercises valueForKey:@"sortValue"], destination, exerciseIndex > destination))];
+  [exercise setSortValue:newSortValue([exercises valueForKey:@"sortValue"], destination, exerciseIndex > destination)];
   [exercises removeObject:exercise];
   [exercises insertObject:exercise atIndex:destination];
 }
@@ -228,7 +228,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   }
   
   id newExercises = [self exercisesForCategory:destinationCategory];
-  [exercise setSortValue:@(newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex, NO))];
+  [exercise setSortValue:newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex, NO)];
   [exercise setCategory:destinationCategory];
 }
 
@@ -261,7 +261,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
     
   Category *cat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
   
-  [cat setSortValue:@(sortValue)];
+  [cat setSortValue:sortValue];
   [_allCategories insertObject:cat atIndex:index];
   
   return cat;
@@ -279,7 +279,7 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   double sortValue = newSortValue([exercises valueForKey:@"sortValue"], index, YES);
   
   Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
-  [exercise setSortValue:@(sortValue)];
+  [exercise setSortValue:sortValue];
   [exercise setCategory:category];
   
   return exercise;

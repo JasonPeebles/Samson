@@ -13,7 +13,7 @@
 - (void)awakeFromInsert;
 {
   [super awakeFromInsert];
-  [self setTimestamp:[NSDate date]];
+  [self setTimestamp:[[NSDate date] timeInterval]];
 }
 
 @end

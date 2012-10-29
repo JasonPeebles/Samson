@@ -2,25 +2,26 @@
 //  Category.h
 //  Samson
 //
-//  Created by Jason Peebles on 2012-10-27.
+//  Created by Jason Peebles on 2012-10-28.
 //  Copyright (c) 2012 Jason Peebles. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class Exercise;
 
 @interface Category : NSManagedObject
 
-@property (nonatomic, strong) NSString * name;
-@property (nonatomic, strong) NSNumber * sortValue;
-@property (nonatomic, strong) NSSet *exercises;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) double sortValue;
+@property (nonatomic, retain) NSSet *exercises;
 @end
 
 @interface Category (CoreDataGeneratedAccessors)
 
-- (void)addExercisesObject:(NSManagedObject *)value;
-- (void)removeExercisesObject:(NSManagedObject *)value;
+- (void)addExercisesObject:(Exercise *)value;
+- (void)removeExercisesObject:(Exercise *)value;
 - (void)addExercises:(NSSet *)values;
 - (void)removeExercises:(NSSet *)values;
 
