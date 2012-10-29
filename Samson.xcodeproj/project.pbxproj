@@ -15,6 +15,7 @@
 		770D562915E1DFD800EF29F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562815E1DFD800EF29F9 /* main.m */; };
 		770D562D15E1DFD800EF29F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 770D562C15E1DFD800EF29F9 /* AppDelegate.m */; };
 		770D563015E1DFD800EF29F9 /* Samson.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */; };
+		77440348163E20AF00EBA5DA /* Workout+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 77440347163E20AF00EBA5DA /* Workout+Custom.m */; };
 		778F76B015E33A5C0033DBD1 /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */; };
 		77B03DAB163C9C76006D76D9 /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DAA163C9C76006D76D9 /* Workout.m */; };
 		77B03DAE163C9C76006D76D9 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B03DAD163C9C76006D76D9 /* Category.m */; };
@@ -43,6 +44,8 @@
 		770D562B15E1DFD800EF29F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		770D562C15E1DFD800EF29F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		770D562F15E1DFD800EF29F9 /* Samson.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Samson.xcdatamodel; sourceTree = "<group>"; };
+		77440346163E20AF00EBA5DA /* Workout+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Workout+Custom.h"; sourceTree = "<group>"; };
+		77440347163E20AF00EBA5DA /* Workout+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Workout+Custom.m"; sourceTree = "<group>"; };
 		778F76AE15E33A5C0033DBD1 /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
 		778F76AF15E33A5C0033DBD1 /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
 		77B03DA9163C9C76006D76D9 /* Workout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Workout.h; sourceTree = "<group>"; };
@@ -142,13 +145,23 @@
 		773A564F15E1E05800170646 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				77440344163E209A00EBA5DA /* Workout */,
 				77B03DB7163CB27E006D76D9 /* Exercise */,
 				77B03DB6163CB24F006D76D9 /* Category */,
 				770D562E15E1DFD800EF29F9 /* Samson.xcdatamodeld */,
-				77B03DA9163C9C76006D76D9 /* Workout.h */,
-				77B03DAA163C9C76006D76D9 /* Workout.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		77440344163E209A00EBA5DA /* Workout */ = {
+			isa = PBXGroup;
+			children = (
+				77B03DA9163C9C76006D76D9 /* Workout.h */,
+				77B03DAA163C9C76006D76D9 /* Workout.m */,
+				77440346163E20AF00EBA5DA /* Workout+Custom.h */,
+				77440347163E20AF00EBA5DA /* Workout+Custom.m */,
+			);
+			name = Workout;
 			sourceTree = "<group>";
 		};
 		77B03DB6163CB24F006D76D9 /* Category */ = {
@@ -300,6 +313,7 @@
 				77B03DB1163C9C76006D76D9 /* Exercise.m in Sources */,
 				77B03DB5163CB23F006D76D9 /* Category+Custom.m in Sources */,
 				77B03DBA163CB293006D76D9 /* Exercise+Custom.m in Sources */,
+				77440348163E20AF00EBA5DA /* Workout+Custom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
