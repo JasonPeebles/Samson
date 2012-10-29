@@ -19,31 +19,36 @@
 
 @end
 
-double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
+double newSortValue(NSArray* sortValues, int destination)
 {
   double sortValue = 0;
-  
-  if ([sortValues count] == 0)
+  if ([sortValues count] < 2)
   {
     sortValue = 1.0;
   }
-  else if (destination == 0)
-  {
-    sortValue = [sortValues[0] doubleValue] - 1.0;
-  }
-  else if (destination >= [sortValues count] - 1)
-  {
-    sortValue = [[sortValues lastObject] doubleValue] + 1.0;
-  }
   else
   {
-    int previousIndex = destination - (int)displaceDown;
-    int nextIndex = destination + (int)(!displaceDown);
+    double lower = 0;
+    if (destination > 0)
+    {
+      lower = [sortValues[destination - 1] doubleValue];
+    }
+    else
+    {
+      lower = [sortValues[1] doubleValue] - 2.0;
+    }
     
-    double previous = [sortValues[previousIndex] doubleValue];
-    double next = [sortValues[nextIndex] doubleValue];
+    double upper = 0;
+    if (destination < [sortValues count] - 1)
+    {
+      upper = [sortValues[destination + 1] doubleValue];
+    }
+    else
+    {
+      upper = [sortValues[destination - 1] doubleValue] + 2.0;
+    }
     
-    sortValue = (previous + next)/2.0;
+    sortValue = (lower + upper)/2.0;
   }
   
   return sortValue;
@@ -85,7 +90,6 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   
   //Find the SQLite store file
   NSURL *storeURL = [NSURL fileURLWithPath:[self catalogueArchivePath]];
-  NSLog(@"%@", [storeURL path]);
   NSError *error = nil;
   
   if (![persistantStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
@@ -201,10 +205,11 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   {
     return;
   }
-    
-  [category setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], destination, categoryIndex > destination)];
+  [category setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], destination)];
+//  [category setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], destination, categoryIndex > destination)];
   [[self allCategories] removeObject:category];
   [[self allCategories] insertObject:category atIndex:destination];
+  [category setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], destination)];
 }
 
 - (void)moveExercise:(Exercise *)exercise withinCategoryToIndex:(int)destination;
@@ -215,9 +220,10 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   {
     return;
   }
-  [exercise setSortValue:newSortValue([exercises valueForKey:@"sortValue"], destination, exerciseIndex > destination)];
   [exercises removeObject:exercise];
   [exercises insertObject:exercise atIndex:destination];
+  [exercise setSortValue:newSortValue([exercises valueForKey:@"sortValue"], destination)];
+//  [exercise setSortValue:newSortValue([exercises valueForKey:@"sortValue"], destination, exerciseIndex > destination)];
 }
 
 - (void)moveExercise:(Exercise *)exercise toCategory:(Category *)destinationCategory andIndex:(int)destinationIndex;
@@ -228,9 +234,12 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
     return;
   }
   
-  id newExercises = [self exercisesForCategory:destinationCategory];
-  [exercise setSortValue:newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex, NO)];
   [exercise setCategory:destinationCategory];
+  id newExercises = [self exercisesForCategory:destinationCategory];
+  [newExercises insertObject:exercise atIndex:destinationIndex];
+  [exercise setSortValue:newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex)];
+  //  [exercise setSortValue:newSortValue([newExercises valueForKey:@"sortValue"], destinationIndex, NO)];
+  
 }
 
 - (NSString *)catalogueArchivePath;
@@ -258,12 +267,12 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
 
 - (Category *)createCategoryAtIndex:(int)index;
 {
-  double sortValue = newSortValue([[self allCategories] valueForKey:@"sortValue"], index, YES);
-    
+//  double sortValue = newSortValue([[self allCategories] valueForKey:@"sortValue"], index, YES);
+  
   Category *cat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
   
-  [cat setSortValue:sortValue];
   [_allCategories insertObject:cat atIndex:index];
+  [cat setSortValue:newSortValue([[self allCategories] valueForKey:@"sortValue"], index)];
   
   return cat;
 }
@@ -277,10 +286,10 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
 - (Exercise *)createExerciseForCategory:(Category *)category atIndex:(int)index;
 {
   id exercises = [self exercisesForCategory:category];
-  double sortValue = newSortValue([exercises valueForKey:@"sortValue"], index, YES);
   
   Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
-  [exercise setSortValue:sortValue];
+  [exercises insertObject:exercise atIndex:index];
+  [exercise setSortValue:newSortValue([exercises valueForKey:@"sortValue"], index)];
   [exercise setCategory:category];
   
   return exercise;

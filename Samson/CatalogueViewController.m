@@ -392,22 +392,10 @@ typedef enum
     
     id nearestCategory = [self objectIsExercise:obj] ? [obj category] : obj;
 
-    BOOL categoryWillChange = ![[[self grabbedObject] category] isEqual:nearestCategory];
+    int destination = 0;
 
-    int destination;
-
-    if (categoryWillChange)
-    {
-      if ([nearestCategory isEqual:[self highlightedCategory]] && movingDown)
-      {
-        destination = 0;
-      }
-      else
-      {
-        destination = [[nearestCategory exercises] count];
-      }
-    }
-    else
+    //This checks to see if we're moving the exercise within the exercise sublist
+    if ([[[self grabbedObject] category] isEqual:nearestCategory])
     {
       destination = [to row] - ([[store allCategories] indexOfObject:nearestCategory] + 1);
     }
