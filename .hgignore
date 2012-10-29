@@ -1,3 +1,8 @@
 syntax: glob
 .DS_Store
 Breakpoints.xcbkptlist
+Samson.xcodeproj/project.pbxproj.orig
+Samson.xcodeproj/project.xcworkspace/xcuserdata/jsp.xcuserdatad/UserInterfaceState.xcuserstate
+Samson.xcodeproj/project.xcworkspace/xcuserdata/jsp.xcuserdatad/UserInterfaceState.xcuserstate.orig
+Samson.xcodeproj/project.xcworkspace/xcuserdata/jsp.xcuserdatad/xcdebugger/Expressions.xcexplist
+Samson/Samson.xcdatamodeld/Samson.xcdatamodel/contents.orig
