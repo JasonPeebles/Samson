@@ -22,7 +22,6 @@
 @property(nonatomic, assign)BOOL highlightCategoryOnDrop;
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;
-- (int)rowIndexOfObject:(id)obj;
 - (BOOL)objectIsExercise:(id)obj;
 
 @end
@@ -98,13 +97,6 @@ typedef enum
   
 //  id categoryCellNib = [UINib nibWithNibName:[CatalogueCell nibName] bundle:nil];
 //  [[self tableView] registerNib:categoryCellNib forCellReuseIdentifier:[CatalogueCell reuseIdentifier]];
-}
-
-- (void)viewDidUnload
-{
-  [super viewDidUnload];
-  // Release any retained subviews of the main view.
-  // e.g. self.myOutlet = nil;
 }
 
 - (NSManagedObject *)objectAtRowIndex:(int)index;

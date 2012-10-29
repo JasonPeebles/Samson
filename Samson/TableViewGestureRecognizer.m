@@ -19,14 +19,14 @@ typedef enum
 
 @interface TableViewGestureRecognizer ()
 
-@property(strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
-@property(weak)   UITableView *tableView;
-@property(weak)   id<TableViewGestureRowMoveDelegate> gestureDelegate;
-@property(weak)   id<UITableViewDelegate> tableViewDelegate;
-@property(assign) TableViewGestureState gestureState;
-@property(strong) NSTimer *cellMovementTimer;
-@property(strong) NSIndexPath *movingIndexPath;
-@property(assign) CGFloat scrollRate;
+@property(nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property(nonatomic, weak)   UITableView *tableView;
+@property(nonatomic, weak)   id<TableViewGestureRowMoveDelegate> gestureDelegate;
+@property(nonatomic, weak)   id<UITableViewDelegate> tableViewDelegate;
+@property(nonatomic, assign) TableViewGestureState gestureState;
+@property(nonatomic, strong) NSTimer *cellMovementTimer;
+@property(nonatomic, strong) NSIndexPath *movingIndexPath;
+@property(nonatomic, assign) CGFloat scrollRate;
 
 - (void)scrollToCellMove;
 
@@ -205,7 +205,7 @@ typedef enum
     }
     
     [UIView beginAnimations:@"CellZoom" context:nil];
-    [snapshotImageView setTransform:CGAffineTransformMakeScale(1.1, 1.1)];
+    [snapshotImageView setTransform:CGAffineTransformMakeScale(1.05, 1.1)];
     [snapshotImageView setCenter:CGPointMake([[self tableView] center].x, gestureLocation.y)];
     [UIView commitAnimations];
     

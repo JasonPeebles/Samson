@@ -131,23 +131,23 @@ double newSortValue(NSArray* sortValues, int destination, BOOL displaceDown)
   
   NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:path];
   
-  [[dictionary allKeys] enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
+  [[dictionary allKeys] enumerateObjectsUsingBlock:^(id key, NSUInteger categoryIndex, BOOL *categoryStop) {
     
     Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
     
     [category setName:key];
-    [category setSortValue:@(idx)];
+    [category setSortValue:@(categoryIndex)];
     
     [_allCategories addObject:category];
     
     NSArray *exercises = [dictionary valueForKey:key];
     
-    [exercises enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {            
+    [exercises enumerateObjectsUsingBlock:^(id obj, NSUInteger exerciseIndex, BOOL *exerciseStop) {
       Exercise *exercise = [NSEntityDescription insertNewObjectForEntityForName:@"Exercise" inManagedObjectContext:context];
       
       [exercise setName:[obj valueForKey:@"name"]];
       [exercise setCategory:category];
-      [exercise setSortValue:@(idx)];
+      [exercise setSortValue:@(exerciseIndex)];
     }];
     
   }];
