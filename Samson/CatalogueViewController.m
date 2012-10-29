@@ -12,6 +12,7 @@
 #import "Exercise.h"
 #import "NSIndexPath+SingleSectionAdditions.h"
 #import "UITableView+SingleSectionsAdditions.h"
+#import "TextFieldCell.h"
 
 @interface CatalogueViewController ()
 
@@ -209,93 +210,25 @@ typedef enum
 
     return cell;
   }
-  id obj = [self objectAtRowIndex:[indexPath row]];
   
-  BOOL isExercise = [self objectIsExercise:obj];
-  
-  NSString *CellIdentifier = [NSString stringWithFormat:@"%@Cell", isExercise ? @"Exercise" : @"Catalogue"];
-  
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+  TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:[TextFieldCell reuseIdentifier]];
   
   if (!cell)
   {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell = [[TextFieldCell alloc] init];
   }
   
-  [[cell textLabel] setText:[obj description]];
-  [[cell textLabel] setTextColor:isExercise ? [UIColor blueColor] : [UIColor blackColor]];
+  id obj = [self objectAtRowIndex:[indexPath row]];
+  [cell setObject: obj];
+  [cell setKeyPath:@"name"];
+  [cell setTextColor:[self objectIsExercise:obj] ? [UIColor blueColor] : [UIColor blackColor]];
     // Configure the cell...
     
   return cell;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-//
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//  if (editingStyle == UITableViewCellEditingStyleDelete)
-//  {
-//    id obj = [self objectAtRowIndex:[indexPath row]];
-//    BOOL isExercise = [self objectIsExercise:obj];
-//    
-//    indexPathMarkedForDeletion = indexPath;
-//    
-//    if (isExercise)
-//    {
-//      id title = [NSString stringWithFormat:@"Are you sure you want to delete the exercise, \"%@\"", obj];
-//      
-//      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"Cancel"
-//                                     destructiveButtonTitle:@"Delete"
-//                                          otherButtonTitles:nil];
-//      
-//      [actionSheet setTag:DeleteExerciseConfirmation];
-//      [actionSheet show];
-//    }
-//    else
-//    {
-//      id title = [NSString stringWithFormat:@"Are you sure you want to delete the category, \"%@\"? This will delete all exercises for this category as well!", obj];
-//      
-//      id actionSheet = [[UIActionSheet alloc] initWithTitle:title
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"Cancel"
-//                                     destructiveButtonTitle:@"Delete"
-//                                          otherButtonTitles:nil];
-//      
-//      [actionSheet setTag:DeleteCategoryConfirmation];
-//      [actionSheet show];
-//    }
-//  }
-//}
-
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
 
 #pragma mark - UITableViewDelegate Protocol
-//
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//  if ([indexPath row] == 0)
-//  {
-//    return UITableViewCellEditingStyleNone;
-//  }
-//  
-//  return UITableViewCellEditingStyleDelete;
-//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
