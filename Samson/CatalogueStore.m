@@ -297,6 +297,7 @@ double newSortValue(NSArray* sortValues, int destination)
 
 - (void)deleteExercise:(Exercise *)exercise;
 {
+  [[exercise category] removeExercisesObject:exercise];
   [context deleteObject:exercise];
 }
 

@@ -14,7 +14,7 @@
 #import "UITableView+SingleSectionsAdditions.h"
 #import "TextFieldCell.h"
 
-@interface CatalogueViewController ()
+@interface CatalogueViewController ()  <UIActionSheetDelegate, TableViewGestureRowMoveDelegate, TableViewGestureEditingRowDelegate>
 
 @property(nonatomic, strong)Category *highlightedCategory;
 @property(nonatomic, strong)TableViewGestureRecognizer *recognizer;
@@ -137,8 +137,13 @@ typedef enum
 - (void)markIndexPathForDeletion:(NSIndexPath *)indexPath;
 {
   indexPathMarkedForDeletion = indexPath;
-
+  
   id obj = [self objectAtRowIndex:[indexPath row]];
+  if ([obj isEqual:[self highlightedCategory]])
+  {
+    [self setHighlightedCategory:nil];
+  }
+  
   BOOL isExercise = [self objectIsExercise:obj];
     
   if (isExercise)
@@ -261,9 +266,11 @@ typedef enum
   
   if (identifier == DeleteExerciseConfirmation)
   {
-    id exercise = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
-    [[CatalogueStore sharedCatalogue] deleteExercise:exercise];
+    id obj = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
+
+    [[CatalogueStore sharedCatalogue] deleteExercise:obj];
     [[self tableView] deleteRowsAtIndexPaths:@[indexPathMarkedForDeletion] withRowAnimation:UITableViewRowAnimationFade];
+
   }
   
   if (identifier == DeleteCategoryConfirmation)
@@ -271,13 +278,12 @@ typedef enum
     id categoryToDelete = [self objectAtRowIndex:[indexPathMarkedForDeletion row]];
     id cs = [CatalogueStore sharedCatalogue];
     
-    int exercisesCount = (categoryToDelete == [self highlightedCategory]) ? [[[self highlightedCategory] exercises] count] : 0;
-    
-    NSRange indexRangeToDelete = NSMakeRange([indexPathMarkedForDeletion row], exercisesCount + 1);
     [cs deleteCategory:categoryToDelete];
     
-    [[self tableView] deleteRowsInIndexRange:indexRangeToDelete withRowAnimation:UITableViewRowAnimationFade];
+    [[self tableView] deleteRowsAtIndexPaths:@[indexPathMarkedForDeletion] withRowAnimation:UITableViewRowAnimationFade];
   }
+  
+  indexPathMarkedForDeletion = nil;
 }
 
 #pragma mark - TableViewGestureRowMoveDelegate Protocol
@@ -402,6 +408,32 @@ typedef enum
   }
   
   return proposed;
+}
+
+#pragma mark - TableViewGestureEditingRowDelegate Protocol
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer commitEditingState:(TableViewGestureEditingState)editingState forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (editingState == TableViewGestureEditingStateNone)
+  {
+    return;
+  }
+  
+  TextFieldCell *cell = (TextFieldCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
+  [UIView beginAnimations:[NSString string] context:nil];
+  [[cell contentView] setFrame:[[cell contentView] bounds]];
+  [UIView commitAnimations];
+  
+  //Left State -> Rename Exercise/Category
+  if (editingState == TableViewGestureEditingStateLeft)
+  {
+    [cell beginEditing];
+  }
+  
+  //Right State -> Delete Exercise/Category
+  if (editingState == TableViewGestureEditingStateRight)
+  {
+    [self markIndexPathForDeletion:indexPath];
+  }
 }
 
 @end

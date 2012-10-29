@@ -12,20 +12,25 @@
 typedef enum
 {
   TableViewGestureStateNone,
-  TableViewGestureStateMoving
+  TableViewGestureStateMoving,
+  TableViewGestureStatePanning
 } TableViewGestureState;
 
 #define SNAPSHOT_TAG 19830416
+#define DEFAULT_TRANSLATION_COMMIT_THRESHOLD 50;
 
 @interface TableViewGestureRecognizer ()
 
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property(nonatomic, weak)   UITableView *tableView;
-@property(nonatomic, weak)   id<TableViewGestureRowMoveDelegate> gestureDelegate;
+@property(nonatomic, weak)   id<TableViewGestureRowMoveDelegate, TableViewGestureEditingRowDelegate> gestureDelegate;
 @property(nonatomic, weak)   id<UITableViewDelegate> tableViewDelegate;
 @property(nonatomic, assign) TableViewGestureState gestureState;
+@property(nonatomic, assign) TableViewGestureState editingState;
 @property(nonatomic, strong) NSTimer *cellMovementTimer;
 @property(nonatomic, strong) NSIndexPath *movingIndexPath;
+@property(nonatomic, strong) NSIndexPath *editingIndexPath;
 @property(nonatomic, assign) CGFloat scrollRate;
 
 - (void)scrollToCellMove;
@@ -35,12 +40,13 @@ typedef enum
 @interface TableViewGestureRecognizer (ProtocolConformanceHelpers)
 
 - (BOOL)longPressGestureEnabled;
-
+- (BOOL)gestureEditingEnabled;
 @end
 
 @interface TableViewGestureRecognizer (UIGestureRecognizerResponses)
 
-- (void)longPressGestureDetected:(UIGestureRecognizer *)recognizer;
+- (void)longPressGestureDetected:(UILongPressGestureRecognizer *)recognizer;
+- (void)panGestureDetected: (UIPanGestureRecognizer *)recognizer;
 
 @end
 
@@ -64,6 +70,11 @@ typedef enum
   [longPress setDelegate:tableViewGestureRecognizer];
   [table addGestureRecognizer:longPress];
   [tableViewGestureRecognizer setLongPressGestureRecognizer:longPress];
+  
+  id pan = [[UIPanGestureRecognizer alloc] initWithTarget:tableViewGestureRecognizer action:@selector(panGestureDetected:)];
+  [pan setDelegate:tableViewGestureRecognizer];
+  [table addGestureRecognizer:pan];
+  [tableViewGestureRecognizer setPanGestureRecognizer:pan];
   
   return tableViewGestureRecognizer;
 }
@@ -105,6 +116,11 @@ typedef enum
   return [[self gestureDelegate] conformsToProtocol:@protocol(TableViewGestureRowMoveDelegate)];
 }
 
+- (BOOL)gestureEditingEnabled;
+{
+  return [[self gestureDelegate] conformsToProtocol:@protocol(TableViewGestureEditingRowDelegate)];
+}
+
 //Set up TableViewGestureRecognizer as proxy class for UITableViewDelegate
 //TODO: this is boiler plate.  Should be a way to set up these implementations within a single method like
 //becomeProxyInstanceForObject:(id)obj
@@ -139,6 +155,19 @@ typedef enum
     
     //Ask the delegate if row can be moved
     return [[self gestureDelegate] gestureRecognizer:self canMoveRowAtIndexPath:indexPathAtGesture];
+  }
+  else if (gestureRecognizer == [self panGestureRecognizer])
+  {
+    if (![self gestureEditingEnabled])
+    {
+      return NO;
+    }
+    
+    CGPoint translation = [[self panGestureRecognizer] translationInView:[self tableView]];
+    if (!indexPathAtGesture || fabsf(translation.y) > fabsf(translation.x))
+    {
+      return NO;
+    }
   }
   
   return YES;
@@ -177,7 +206,7 @@ typedef enum
 }
 
 #pragma mark UIGestureRecognizer Responses
-- (void)longPressGestureDetected:(UIGestureRecognizer *)recognizer;
+- (void)longPressGestureDetected:(UILongPressGestureRecognizer *)recognizer;
 {
   UIGestureRecognizerState state = [recognizer state];
   CGPoint gestureLocation = [recognizer locationInView:[self tableView]];
@@ -287,6 +316,78 @@ typedef enum
                        [snapshotImageView removeFromSuperview];
                      }];
     
+  }
+}
+
+- (BOOL)panGestureExceedsThreshold
+{
+  CGFloat xTranslation = [[self panGestureRecognizer] translationInView:[self tableView]].x;
+  CGFloat commitThreshold = DEFAULT_TRANSLATION_COMMIT_THRESHOLD;
+  if ([[self gestureDelegate] respondsToSelector:@selector(gestureRecognizer:translationThresholdForCommittingEditingState:forRowAtIndexPath:)])
+  {
+    commitThreshold = [[self gestureDelegate] gestureRecognizer:self translationThresholdForCommittingEditingState:(xTranslation > 0 ? TableViewGestureEditingStateLeft : TableViewGestureEditingStateRight) forRowAtIndexPath:[self editingIndexPath]];
+  }
+
+  return fabsf(xTranslation) >= commitThreshold;
+}
+
+- (void)panGestureDetected: (UIPanGestureRecognizer *)recognizer;
+{
+  UIGestureRecognizerState state = [recognizer state];
+  
+  if (!(state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged || state == UIGestureRecognizerStateEnded))
+  {
+    return;
+  }
+  
+  CGFloat xTranslation = [recognizer translationInView:[self tableView]].x; 
+  UITableViewCell *editingCell = [[self tableView] cellForRowAtIndexPath:[self editingIndexPath]];
+  
+  if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged)
+  {
+    CGPoint gestureLocation = [recognizer locationOfTouch:0 inView:[self tableView]];
+    NSIndexPath *indexPathAtGesture = [[self tableView] indexPathForRowAtPoint:gestureLocation];
+    
+    if (![self editingIndexPath])
+    {
+      [self setEditingIndexPath:indexPathAtGesture];
+    }
+    
+    //Adjust the cell's content view
+    [[editingCell contentView] setFrame:CGRectOffset([[editingCell contentView] bounds], xTranslation, 0)];
+    
+    //Pass this on to the gestureDelegate if we've passed the threshold
+    if ([self panGestureExceedsThreshold])
+    {
+      [self setEditingState:(xTranslation > 0 ? TableViewGestureEditingStateLeft : TableViewGestureEditingStateRight)];
+      if ([[self gestureDelegate] respondsToSelector:@selector(gestureRecognizer:didEnterEditingState:forRowAtIndexPath:)])
+      {
+        [[self gestureDelegate] gestureRecognizer:self didEnterEditingState:[self editingState] forRowAtIndexPath:[self editingIndexPath]];
+      }
+    }
+  }
+  else if (state == UIGestureRecognizerStateEnded)
+  {
+    
+    //Tell the delegate to commit the editing state
+    if ([self panGestureExceedsThreshold])
+    {
+      if ([[self gestureDelegate] respondsToSelector:@selector(gestureRecognizer:commitEditingState:forRowAtIndexPath:)])
+      {
+        [[self gestureDelegate] gestureRecognizer:self commitEditingState:[self editingState] forRowAtIndexPath:[self editingIndexPath]];
+      }
+    }
+    //Otherwise just adjust the cell's content view back to the original position
+    else
+    {
+      [UIView beginAnimations:[NSString string] context:nil];
+      [[editingCell contentView] setFrame:[[editingCell contentView] bounds]];
+      [UIView commitAnimations];
+    }
+    
+    [self setGestureState:TableViewGestureStateNone];
+    [self setEditingState:TableViewGestureEditingStateNone];
+    [self setEditingIndexPath:nil];
   }
 }
 

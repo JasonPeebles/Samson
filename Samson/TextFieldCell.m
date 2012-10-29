@@ -31,6 +31,7 @@ static NSString *ReuseIdentifier = @"TextFieldCell";
   
   [self setTextField:[[UITextField alloc] initWithFrame:CGRectZero]];
   [[self textField] setDelegate:self];
+  [[self textField] setReturnKeyType:UIReturnKeyDone];
   [[self textField] setUserInteractionEnabled:NO];
   [[self contentView] addSubview:[self textField]];
   
@@ -79,11 +80,13 @@ static NSString *ReuseIdentifier = @"TextFieldCell";
 
 - (void)beginEditing;
 {
+  [[self textField] setUserInteractionEnabled:YES];
   [[self textField] becomeFirstResponder];
 }
 
 - (void)endEditing;
 {
+  [[self textField] setUserInteractionEnabled:NO];
   [[self textField] resignFirstResponder];
 }
 
@@ -104,6 +107,17 @@ static NSString *ReuseIdentifier = @"TextFieldCell";
 - (void)textFieldDidEndEditing:(UITextField *)field;
 {
   [[self object] setValue:[field text] forKeyPath:[self keyPath]];
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)field
+{
+  return [[field text] length] > 0;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)field
+{
+  [self endEditing];
+  return YES;
 }
 
 @end

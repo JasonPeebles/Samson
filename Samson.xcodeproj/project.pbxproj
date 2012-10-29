@@ -29,6 +29,7 @@
 		77C51DC015E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C51DBF15E30EB1002FF26D /* UITableView+SingleSectionsAdditions.m */; };
 		77D6E17D15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */; };
 		77EECFE2163B717D002EE860 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EECFE1163B717D002EE860 /* Default-568h@2x.png */; };
+		77FBF675163EFB2900BFAB0F /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77FBF674163EFB2900BFAB0F /* TextFieldCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,8 @@
 		77D6E17B15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+SingleSectionAdditions.h"; sourceTree = "<group>"; };
 		77D6E17C15E2ED7D00098D62 /* NSIndexPath+SingleSectionAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+SingleSectionAdditions.m"; sourceTree = "<group>"; };
 		77EECFE1163B717D002EE860 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		77FBF673163EFB2900BFAB0F /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
+		77FBF674163EFB2900BFAB0F /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,7 @@
 		770D562215E1DFD800EF29F9 /* Samson */ = {
 			isa = PBXGroup;
 			children = (
+				77FBF670163EFAD300BFAB0F /* Views */,
 				77C1C88C15EE4F48005601D1 /* Table View Gesture Recognizer */,
 				77D6E17915E2ED5600098D62 /* Categeories */,
 				77BBDC8F15E2798600D0B79F /* View Controllers */,
@@ -235,6 +239,23 @@
 			name = Categeories;
 			sourceTree = "<group>";
 		};
+		77FBF670163EFAD300BFAB0F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77FBF672163EFAD800BFAB0F /* Table View Cells */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		77FBF672163EFAD800BFAB0F /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77FBF673163EFB2900BFAB0F /* TextFieldCell.h */,
+				77FBF674163EFB2900BFAB0F /* TextFieldCell.m */,
+			);
+			name = "Table View Cells";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -314,6 +335,7 @@
 				77440353163E2C1B00EBA5DA /* Exercise.m in Sources */,
 				77440356163E2C3900EBA5DA /* Category.m in Sources */,
 				77440359163E2C4E00EBA5DA /* Workout.m in Sources */,
+				77FBF675163EFB2900BFAB0F /* TextFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +358,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
@@ -357,7 +380,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
@@ -384,6 +407,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
@@ -398,7 +422,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;

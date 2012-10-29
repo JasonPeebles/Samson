@@ -6,7 +6,14 @@
 //  Copyright (c) 2012 Jason Peebles. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+typedef enum
+{
+  TableViewGestureEditingStateNone,
+  TableViewGestureEditingStateLeft,
+  TableViewGestureEditingStateRight
+} TableViewGestureEditingState;
 
 @class TableViewGestureRecognizer;
 
@@ -28,6 +35,16 @@
 @optional
 - (NSIndexPath *)gestureRecognizer:(TableViewGestureRecognizer *)recognizer targetIndexPathForRowMoveFromIndexPath:(NSIndexPath *)from toProposedIndexPath:(NSIndexPath *)proposed;
 
+@end
+
+@protocol TableViewGestureEditingRowDelegate <NSObject>
+@optional
+//Asks the delegate for the translation threshold for editing a cell
+- (CGFloat)gestureRecognizer:(TableViewGestureRecognizer *)recognizer translationThresholdForCommittingEditingState:(TableViewGestureEditingState)editingState forRowAtIndexPath:(NSIndexPath *)indexPath;
+//Sent when a user drags the cell left or right beyond the commit threshold but hasn't yet ended the pan gesture
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer didEnterEditingState:(TableViewGestureEditingState)editingState forRowAtIndexPath:(NSIndexPath *)indexPath;
+//Sent when the users finishes panning the cell left or right and its translation is beyond the commit threshold
+- (void)gestureRecognizer:(TableViewGestureRecognizer *)recognizer commitEditingState:(TableViewGestureEditingState)editingState forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface TableViewGestureRecognizer : NSObject <UIGestureRecognizerDelegate, UITableViewDelegate>

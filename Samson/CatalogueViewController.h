@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TableViewGestureRecognizer.h"
 
-@interface CatalogueViewController : UITableViewController <UIActionSheetDelegate, TableViewGestureRowMoveDelegate>
+@interface CatalogueViewController : UITableViewController
 {
   NSIndexPath *indexPathMarkedForDeletion;
 }
