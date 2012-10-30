@@ -2,132 +2,56 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>A</key>
+	<key>Chest</key>
 	<array>
 		<dict>
 			<key>name</key>
-			<string>A1</string>
+			<string>Pec Flyes</string>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>A2</string>
+			<string>Dumbbell Press</string>
 		</dict>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>A3</string>
+			<string>Bench Press</string>
 		</dict>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>A4</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>A5</string>
+			<string>Chest Press Machine</string>
 		</dict>
 	</array>
-	<key>B</key>
+	<key>Arms</key>
 	<array>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>B1</string>
+			<string>Preacher Curls</string>
 		</dict>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>B2</string>
+			<string>Reverse Barbell Curl</string>
 		</dict>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>B3</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>B4</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>B5</string>
+			<string>Dumbbell Curl</string>
 		</dict>
 	</array>
-	<key>C</key>
+	<key>Legs</key>
 	<array>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>C1</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>C2</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>C3</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>C4</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>C5</string>
+			<string>Leg Press</string>
 		</dict>
 	</array>
-	<key>D</key>
+	<key>Deltoids</key>
 	<array>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>D1</string>
+			<string>Row Machine</string>
 		</dict>
 		<dict>
-			
-			
 			<key>name</key>
-			<string>D2</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>D3</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>D4</string>
-		</dict>
-		<dict>
-			
-			
-			<key>name</key>
-			<string>D5</string>
+			<string>Upright Barbell Row</string>
 		</dict>
 	</array>
 </dict>
