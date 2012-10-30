@@ -115,19 +115,14 @@ double newSortValue(NSArray* sortValues, int destination)
 
 /*Reads in a predefined plist of the form:
  <Root>
- "CategoryA" : [{name:"Exercise1", usesWeights: <BOOL>}, ...],
- "CategoryB" : [{name:"ExerciseN", usesWeights: <BOOL>}, ...],
+ "CategoryA" : [{name:"Exercise1", etc}, ...],
+ "CategoryB" : [{name:"ExerciseN", etc}, ...],
  .
  .
  .
  
  
  </Root>
- usesWeights:
- YES => WeightExercise instance
- NO  => DurationExercise instance
- 
- 
  */
 - (void)loadDefaultStoreData;
 {
